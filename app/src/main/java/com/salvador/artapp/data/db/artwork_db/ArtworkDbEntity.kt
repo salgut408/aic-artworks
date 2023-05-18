@@ -1,12 +1,15 @@
-package com.salvador.artapp.domain.domain_models
+package com.salvador.artapp.data.db.artwork_db
 
-import com.salvador.artapp.data.db.artwork_db.ArtworkDbEntity
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.salvador.artapp.domain.domain_models.ArtworkModel
 
-data class ArtworkModel(
+@Entity(tableName = "artworks_table")
+data class ArtworkDbEntity(
     val artistDisplay: String = "",
     val artistTitle: String = "",
     val classificationTitle: String = "",
-    val dateStart: Int = 0,
+    @PrimaryKey(autoGenerate = false)
     val id: Int = 0,
     val imageId: String = "",
     val inscriptions: String = "",
@@ -18,17 +21,20 @@ data class ArtworkModel(
     val title: String = ""
 )
 
-fun ArtworkModel.asArtworkDbEntity(): ArtworkDbEntity {
-    return ArtworkDbEntity(
+fun ArtworkDbEntity.asDomain(): ArtworkModel {
+    return  ArtworkModel(
         artistDisplay = artistDisplay,
         artistTitle = artistTitle,
         classificationTitle = classificationTitle,
+        dateStart = 0,
         id = id,
         imageId = imageId,
         inscriptions = inscriptions,
         latitude = latitude,
         longitude = longitude,
+        provenanceText = provenanceText,
         mediumDisplay = mediumDisplay,
-        provenanceText = provenanceText
+        styleTitle = styleTitle,
+        title = title
     )
 }
