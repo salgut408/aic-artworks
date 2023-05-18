@@ -2,6 +2,7 @@ package com.salvador.artapp.data.remote.network_responses
 
 
 import com.google.gson.annotations.SerializedName
+import com.salvador.artapp.domain.domain_models.ArtworkModel
 
 data class Data(
     @SerializedName("artist_display")
@@ -19,15 +20,35 @@ data class Data(
     @SerializedName("inscriptions")
     val inscriptions: String? = "",
     @SerializedName("latitude")
-    val latitude: Any? = Any(),
+    val latitude: String? = "",
     @SerializedName("longitude")
-    val longitude: Any? = Any(),
+    val longitude: String? = "",
     @SerializedName("medium_display")
     val mediumDisplay: String? = "",
     @SerializedName("provenance_text")
-    val provenanceText: Any? = Any(),
+    val provenanceText: String? = "",
     @SerializedName("style_title")
     val styleTitle: String? = "",
     @SerializedName("title")
     val title: String? = ""
 )
+
+fun Data.asDomain(): ArtworkModel {
+    return ArtworkModel(
+        artistDisplay = artistDisplay ?: "",
+        artistTitle = artistTitle ?: "",
+        classificationTitle = classificationTitle ?: "",
+        dateStart = dateStart ?: 0,
+        id = id ?: 0,
+        imageId = imageId ?: "",
+        inscriptions = inscriptions ?: "",
+        latitude = latitude ?: "",
+        longitude = longitude ?: "",
+        mediumDisplay = mediumDisplay ?: "",
+        provenanceText = provenanceText ?: "",
+        styleTitle = styleTitle ?: "",
+        title = title ?: "",
+
+
+    )
+}

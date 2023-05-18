@@ -1,8 +1,8 @@
 package com.salvador.artapp.domain.domain_models
 
-data class ResponseModelModel(
+data class ResponseModel(
     val config: ConfigModel = ConfigModel(),
-    val `data`: List<DataModel> = listOf(),
+    val artWork: List<ArtworkModel> = listOf(),
     val info: InfoModel = InfoModel(),
     val pagination: PaginationModel = PaginationModel()
 )

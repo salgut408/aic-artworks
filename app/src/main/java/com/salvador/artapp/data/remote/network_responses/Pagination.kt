@@ -2,6 +2,7 @@ package com.salvador.artapp.data.remote.network_responses
 
 
 import com.google.gson.annotations.SerializedName
+import com.salvador.artapp.domain.domain_models.PaginationModel
 
 data class Pagination(
     @SerializedName("current_page")
@@ -17,3 +18,14 @@ data class Pagination(
     @SerializedName("total_pages")
     val totalPages: Int? = 0
 )
+
+fun Pagination.asDomain(): PaginationModel {
+    return PaginationModel(
+        currentPage = currentPage ?: 0,
+        limit = limit ?: 0,
+        nextUrl = nextUrl ?: "",
+        offset = offset ?: 0,
+        total = total ?: 0,
+        totalPages = totalPages ?: 0
+    )
+}
