@@ -3,6 +3,7 @@ package com.salvador.artapp.data.remote.api
 import com.salvador.artapp.data.remote.network_responses.NetworkResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ArtApi {
@@ -13,6 +14,17 @@ interface ArtApi {
         fieldTerms: String,
         @Query("page")
         pageNumber: Int = 1
+
+    ): Response<NetworkResponse>
+
+    @GET("artworks/{id}")
+    suspend fun getArtDetails(
+        @Query("fields")
+        fieldTerms: String,
+        @Query("page")
+        pageNumber: Int = 1,
+        @Path("id")
+        id: String? = null
 
     ): Response<NetworkResponse>
 
@@ -37,4 +49,8 @@ interface ArtApi {
         pageNumber: Int = 1
 
     ): Response<NetworkResponse>
+
+
+
+//    /artworks/{id}
 }

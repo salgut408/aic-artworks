@@ -9,6 +9,8 @@ data class Data(
     val artistDisplay: String? = "",
     @SerializedName("artist_title")
     val artistTitle: String? = "",
+    @SerializedName("_score")
+    val score: Double? = null,
     @SerializedName("classification_title")
     val classificationTitle: String? = "",
     @SerializedName("date_start")
@@ -48,6 +50,7 @@ fun Data.asDomain(): ArtworkModel {
         provenanceText = provenanceText ?: "",
         styleTitle = styleTitle ?: "",
         title = title ?: "",
+        colorfullness = score ?: 0.0
 
 
     )

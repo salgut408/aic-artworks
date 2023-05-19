@@ -2,7 +2,7 @@ package com.salvador.artapp.data.remote.network_responses
 
 
 import com.google.gson.annotations.SerializedName
-import com.salvador.artapp.domain.domain_models.ResponseModel
+import com.salvador.artapp.domain.domain_models.ArtResponseModel
 
 data class NetworkResponse(
     @SerializedName("config")
@@ -15,8 +15,8 @@ data class NetworkResponse(
     val pagination: Pagination = Pagination()
 )
 
-fun NetworkResponse.asDomain(): ResponseModel {
-    return ResponseModel(
+fun NetworkResponse.asDomain(): ArtResponseModel {
+    return ArtResponseModel(
         config = config.asDomain(),
         artWork = artwork.map { it.asDomain() },
         info = info.asDomain(),

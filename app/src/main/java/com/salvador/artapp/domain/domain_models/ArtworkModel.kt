@@ -16,8 +16,16 @@ data class ArtworkModel(
     val provenanceText: String = "",
     val styleTitle: String = "",
     val title: String = "",
-    val isFavorite: Boolean = false
-)
+    val isFavorite: Boolean = false,
+    val imgConfigUrl: String = "",
+    val colorfullness: Double = 0.0,
+
+    ) {
+    fun getOtherImgUrl(): String {
+        val urlForDisplay = "https://www.artic.edu/iiif/2/${imageId}/full/843,/0/default.jpg"
+        return urlForDisplay
+    }
+}
 
 fun ArtworkModel.asArtworkDbEntity(): ArtworkDbEntity {
     return ArtworkDbEntity(
