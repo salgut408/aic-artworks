@@ -15,7 +15,8 @@ data class ArtworkModel(
     val mediumDisplay: String = "",
     val provenanceText: String = "",
     val styleTitle: String = "",
-    val title: String = ""
+    val title: String = "",
+    val isFavorite: Boolean = false
 )
 
 fun ArtworkModel.asArtworkDbEntity(): ArtworkDbEntity {

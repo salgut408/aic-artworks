@@ -1,4 +1,8 @@
 package com.salvador.artapp.di
 
-class ArtAppBase {
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
+class ArtAppBase: Application() {
 }
