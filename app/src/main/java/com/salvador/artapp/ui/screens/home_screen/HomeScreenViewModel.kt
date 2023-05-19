@@ -44,7 +44,6 @@ class HomeScreenViewModel @Inject constructor(
             val artwork = response.artWork
             val config = response.config
             val pagination = response.pagination
-            Log.e("FULL_RESP", response.toString())
             if (artwork.isNotEmpty()) {
                 addAllToDb(artwork)
                 setListUiState(
@@ -53,11 +52,11 @@ class HomeScreenViewModel @Inject constructor(
                     pagination = pagination,
                     config = config
                 )
-                artPage++
+                artPage++ // ??
             }
         }
         catch (e: Exception) {
-            Log.e("VM_LOAD", e.stackTraceToString())
+            Log.e("VM_LOAD_ERROR", e.stackTraceToString())
         }
     }
 
@@ -77,6 +76,5 @@ class HomeScreenViewModel @Inject constructor(
             )
         }
     }
-
 
 }

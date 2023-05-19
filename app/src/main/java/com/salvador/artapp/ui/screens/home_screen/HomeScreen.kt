@@ -4,8 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -13,14 +12,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.salvador.artapp.domain.domain_models.ArtworkModel
+import com.salvador.artapp.ui.common_comps.ArtScaffold
 import com.salvador.artapp.ui.common_comps.ArtSurface
 import com.salvador.artapp.ui.common_comps.BasicImage
 import com.salvador.artapp.ui.common_comps.DefaultCard
+import com.salvador.artapp.utils.Constants.Companion.QUERY_PAGE_SIZE
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
 //    navController: NavController,
@@ -29,13 +32,29 @@ fun HomeScreen(
 
     val uiState by homeScreenViewModel.listUiState.collectAsState()
     val artworks = uiState.currentList
-    Column(modifier = Modifier.fillMaxWidth()) {
-        if (artworks.isNotEmpty()) {
+    val pagination = uiState.pagination
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-            ArtworkColumn(art = artworks, modifier = Modifier)
 
+    ArtScaffold(
+        topBar = {
+        HomeToolbar(
+            title = "ART",
+            scrollBehavior = scrollBehavior
+        )},
+        content = { padding ->
+
+            Column(modifier = Modifier.fillMaxWidth()) {
+                if (artworks.isNotEmpty()) {
+
+                    ArtworkColumn(art = artworks, modifier = Modifier, paddingValues = padding)
+
+                }
+            }
         }
-    }
+    )
+
+
 
 
 }
@@ -45,11 +64,12 @@ fun ArtworkColumn(
     art: List<ArtworkModel>,
 //    onArtClick: ()-> Unit,
 //    navController: NavController,
+    paddingValues: PaddingValues,
     modifier: Modifier,
 ) {
     LazyColumn(
         modifier = modifier,
-        contentPadding = PaddingValues(8.dp)
+        contentPadding = paddingValues
     ) {
         items(art) { artwork ->
             ArtworkCard(
@@ -128,4 +148,21 @@ fun ArtworkItem(
             }
         }
     }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HomeToolbar(
+    title: String,
+    modifier: Modifier = Modifier,
+    scrollBehavior: TopAppBarScrollBehavior,
+) {
+    CenterAlignedTopAppBar(
+        title = { Text(text = title, fontWeight = FontWeight.Bold) },
+        navigationIcon = {
+
+        },
+        scrollBehavior = scrollBehavior,
+    )
 }
