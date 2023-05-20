@@ -16,6 +16,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.salvador.artapp.domain.domain_models.ArtworkModel
 import com.salvador.artapp.ui.common_comps.ArtScaffold
 import com.salvador.artapp.ui.common_comps.ArtSurface
@@ -30,10 +32,11 @@ fun HomeScreen(
     homeScreenViewModel: HomeScreenViewModel = hiltViewModel(),
 ) {
 
-    val uiState by homeScreenViewModel.listUiState.collectAsState()
+    val uiState by homeScreenViewModel.listUiState.collectAsStateWithLifecycle()
     val artworks = uiState.currentList
     val pagination = uiState.pagination
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
 
 
     ArtScaffold(
@@ -44,6 +47,7 @@ fun HomeScreen(
         )
                  },
         content = { padding ->
+
 
             Column(modifier = Modifier.fillMaxWidth()) {
                 if (artworks.isNotEmpty()) {

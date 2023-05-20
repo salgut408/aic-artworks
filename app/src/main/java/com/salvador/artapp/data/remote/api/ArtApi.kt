@@ -17,6 +17,15 @@ interface ArtApi {
 
     ): Response<NetworkResponse>
 
+    @GET("artworks/search")
+    suspend fun getAllArtPaged(
+        @Query("fields")
+        fieldTerms: String,
+        @Query("page")
+        pageNumber: Int
+
+    ): Result<NetworkResponse>
+
     @GET("artworks/{id}")
     suspend fun getArtDetails(
         @Query("fields")
