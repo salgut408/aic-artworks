@@ -41,7 +41,8 @@ fun HomeScreen(
         HomeToolbar(
             title = "ART",
             scrollBehavior = scrollBehavior
-        )},
+        )
+                 },
         content = { padding ->
 
             Column(modifier = Modifier.fillMaxWidth()) {
@@ -53,10 +54,6 @@ fun HomeScreen(
             }
         }
     )
-
-
-
-
 }
 
 @Composable
