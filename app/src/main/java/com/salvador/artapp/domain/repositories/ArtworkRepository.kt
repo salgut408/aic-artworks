@@ -11,7 +11,6 @@ interface ArtworkRepository {
     suspend fun saveAllArt(art: List<ArtworkModel>)
     suspend fun getArtDetail(fieldTerms: String, pageNumber: Int, id:String): ArtworkModel
     suspend fun getFullResponse(fieldTerms: String, pageNumber: Int): ArtResponseModel
-    suspend fun getArtworksPaged(): Flow<PagingData<ArtworkModel>>
 
 
 }

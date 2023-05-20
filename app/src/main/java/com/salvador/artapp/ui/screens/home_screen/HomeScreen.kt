@@ -1,5 +1,6 @@
 package com.salvador.artapp.ui.screens.home_screen
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,13 +18,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
+import com.salvador.artapp.data.repository_impls.paged.ArtSource
 import com.salvador.artapp.domain.domain_models.ArtworkModel
 import com.salvador.artapp.ui.common_comps.ArtScaffold
 import com.salvador.artapp.ui.common_comps.ArtSurface
 import com.salvador.artapp.ui.common_comps.BasicImage
 import com.salvador.artapp.ui.common_comps.DefaultCard
 import com.salvador.artapp.utils.Constants.Companion.QUERY_PAGE_SIZE
+import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,7 +43,9 @@ fun HomeScreen(
     val uiState by homeScreenViewModel.listUiState.collectAsStateWithLifecycle()
     val artworks = uiState.currentList
     val pagination = uiState.pagination
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
+
 
 
 
@@ -44,20 +54,58 @@ fun HomeScreen(
         HomeToolbar(
             title = "ART",
             scrollBehavior = scrollBehavior
-        )
-                 },
+        ) },
         content = { padding ->
-
-
             Column(modifier = Modifier.fillMaxWidth()) {
                 if (artworks.isNotEmpty()) {
-
-                    ArtworkColumn(art = artworks, modifier = Modifier, paddingValues = padding)
-
+//                    ArtworkColumn(art = artworks, modifier = Modifier, paddingValues = padding)
+                    ArtworkList(artworks = homeScreenViewModel.art, contentPaddingValues = padding)
                 }
             }
         }
     )
+}
+
+@Composable
+fun ArtworkList(artworks: Flow<PagingData<ArtworkModel>>, contentPaddingValues: PaddingValues) {
+    val lazyArtItems = artworks.collectAsLazyPagingItems()
+    LazyColumn (contentPadding = contentPaddingValues) {
+        items(lazyArtItems) { art ->
+            ArtworkCard(
+                artwork =art!! ,
+                onArtworkClick = { /*TODO*/ },
+                modifier = Modifier)
+        }
+        lazyArtItems.apply {
+            when {
+                loadState.refresh is LoadState.Loading -> {
+                    item { LoadingView(modifier = Modifier.fillParentMaxSize())}
+                }
+                loadState.append is LoadState.Loading -> {
+                    item { LoadingItem() }
+                }
+                loadState.refresh is LoadState.Error -> {
+                    val e = lazyArtItems.loadState.refresh as LoadState.Error
+                    item {
+                        ErrorItem(
+                            message = e.error.localizedMessage!!,
+                            modifier = Modifier.fillParentMaxSize(),
+                            onClickRetry = { retry() }
+                        )
+                    }
+                }
+                loadState.append is LoadState.Error -> {
+                    val e = lazyArtItems.loadState.append as LoadState.Error
+                    item {
+                        ErrorItem(
+                            message = e.error.localizedMessage!!,
+                            onClickRetry = { retry() }
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -166,4 +214,51 @@ fun HomeToolbar(
         },
         scrollBehavior = scrollBehavior,
     )
+}
+
+@Composable
+fun LoadingView(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CircularProgressIndicator()
+    }
+}
+
+@Composable
+fun LoadingItem() {
+    CircularProgressIndicator(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .wrapContentWidth(Alignment.CenterHorizontally)
+    )
+}
+
+@Composable
+fun ErrorItem(
+    message: String,
+    modifier: Modifier = Modifier,
+    onClickRetry: () -> Unit
+) {
+    Row(
+        modifier = modifier.padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = message,
+            maxLines = 1,
+            modifier = Modifier.weight(1f),
+            style = MaterialTheme.typography.displaySmall,
+            color = Color.Red
+        )
+        OutlinedButton(onClick = onClickRetry) {
+            Text(text = "Try again")
+        }
+    }
 }

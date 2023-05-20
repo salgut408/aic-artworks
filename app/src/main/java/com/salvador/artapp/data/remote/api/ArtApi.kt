@@ -13,7 +13,7 @@ interface ArtApi {
         @Query("fields")
         fieldTerms: String,
         @Query("page")
-        pageNumber: Int = 1
+        pageNumber: Int
 
     ): Response<NetworkResponse>
 

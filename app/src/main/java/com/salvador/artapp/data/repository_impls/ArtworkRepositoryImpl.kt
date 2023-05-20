@@ -55,23 +55,13 @@ class ArtworkRepositoryImpl(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getFullResponse(fieldTerms: String, pageNumber: Int): ArtResponseModel {
-        val fullArtResponse = artApi.getAllArt(FIELD_TERMS, pageNumber)
-        if (fullArtResponse.isSuccessful) {
-            return fullArtResponse.body()?.asDomain()!!
-        }
-        return fullArtResponse.body()?.asDomain()!!
+    override suspend fun getFullResponse(fieldTerms: String, pageNumber: Int) =
+        artApi.getAllArt(FIELD_TERMS, pageNumber).body()?.asDomain()!!
 
-    }
 
-    override suspend fun getArtworksPaged(): Flow<PagingData<ArtworkModel>> = Pager(
-            config = PagingConfig(
-                pageSize = 20,
-            ),
-            pagingSourceFactory = {
-                ArtPagingSource(artApi)
-            }
-        ).flow
+
+
+
 
 
 //

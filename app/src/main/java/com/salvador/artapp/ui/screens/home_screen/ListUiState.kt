@@ -8,5 +8,7 @@ data class ListUiState(
     val currentList: List<ArtworkModel> = listOf(),
     val isLoading: Boolean = true,
     val pagination: PaginationModel = PaginationModel(),
-    val config: ConfigModel = ConfigModel()
+    val config: ConfigModel = ConfigModel(),
+val currentPage: Int = 0,
+    val totalPages: Int = 0
 )

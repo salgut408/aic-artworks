@@ -6,7 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.salvador.artapp.data.repository_impls.paged.ArtSource
 import com.salvador.artapp.domain.domain_models.ArtworkModel
 import com.salvador.artapp.domain.domain_models.ConfigModel
 import com.salvador.artapp.domain.domain_models.PaginationModel
@@ -22,15 +25,17 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
     private val artworkRepository: ArtworkRepository,
-    private val getArtworksUseCase: GetArtworksUseCase
-): ViewModel() {
-    private val _listUiState = MutableStateFlow(ListUiState(isLoading = true,))
+    private val getArtworksUseCase: GetArtworksUseCase,
+) : ViewModel() {
+    private val _listUiState = MutableStateFlow(ListUiState(isLoading = true))
     val listUiState: StateFlow<ListUiState> = _listUiState.asStateFlow()
 
+    val art: Flow<PagingData<ArtworkModel>> = Pager(PagingConfig(pageSize = 20)){
+        ArtSource(artworkRepository)
+    }.flow
 
-
-     var artPage = 1
-     var searchingArtPage = 1
+    var artPage = 1
+    var searchingArtPage = 1
 
     init {
 
@@ -42,8 +47,7 @@ class HomeScreenViewModel @Inject constructor(
     }
 
 
-
-    private fun loadAllArtworks() = viewModelScope.launch{
+    private fun loadAllArtworks() = viewModelScope.launch {
 
         try {
             val response = artworkRepository.getFullResponse(FIELD_TERMS, artPage)
@@ -53,14 +57,17 @@ class HomeScreenViewModel @Inject constructor(
             if (artwork.isNotEmpty()) {
                 addAllToDb(artwork)
                 setListUiState(
-                    artworks = artwork,
+                    artworks = _listUiState.value.currentList + artwork,
                     isLoading = false,
                     pagination = pagination,
-                    config = config
+                    config = config,
+                    currentPage = pagination.currentPage,
+                    totalPages = pagination.totalPages
                 )
-                artPage++ // ??
-                Log.e("PAGE???", artPage.toString())
 
+                Log.e("CONFIG", config.toString())
+                Log.e("PAGINATION", pagination.toString())
+                Log.e("LISTUI_STATE", _listUiState.value.toString())
             }
         }
         catch (e: Exception) {
@@ -72,16 +79,25 @@ class HomeScreenViewModel @Inject constructor(
         artworks: List<ArtworkModel>,
         isLoading: Boolean,
         config: ConfigModel,
-        pagination: PaginationModel
+        pagination: PaginationModel,
+        currentPage: Int,
+        totalPages:Int
     ) {
         _listUiState.update {
             it.copy(
                 currentList = artworks,
                 isLoading = isLoading,
                 config = config,
-                pagination = pagination
+                pagination = pagination,
+                currentPage = currentPage,
+                totalPages = totalPages
 
             )
+        }
+    }
+    suspend fun loadMore(currentPage:Int, totalPages: Int){
+        if(currentPage <= totalPages) {
+            artworkRepository.getArtworks(FIELD_TERMS, currentPage)
         }
     }
 
