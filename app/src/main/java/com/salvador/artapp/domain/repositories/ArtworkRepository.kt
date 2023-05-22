@@ -6,7 +6,6 @@ import com.salvador.artapp.domain.domain_models.list.ArtworkModel
 import com.salvador.artapp.domain.domain_models.list.ArtResponseModel
 
 interface ArtworkRepository {
-    suspend fun getArtworks(fieldTerms: String, pageNumber: Int): List<ArtworkModel>
     suspend fun searchForArtworks(fieldTerms: String, searchQuery: String, pageNumber: Int): List<ArtworkModel>
     suspend fun saveAllArt(art: List<ArtworkModel>)
     suspend fun getArtDetail( id:String): ArtDetail

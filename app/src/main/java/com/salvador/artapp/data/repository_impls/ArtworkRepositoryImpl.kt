@@ -6,6 +6,7 @@ import com.salvador.artapp.data.remote.network_responses.detail.NetworkDetail
 import com.salvador.artapp.data.remote.network_responses.detail.asDomain
 import com.salvador.artapp.data.remote.network_responses.list.asDomain
 import com.salvador.artapp.domain.domain_models.detail.ArtDetail
+import com.salvador.artapp.domain.domain_models.list.ArtResponseModel
 import com.salvador.artapp.domain.domain_models.list.ArtworkModel
 import com.salvador.artapp.domain.domain_models.list.asArtworkDbEntity
 import com.salvador.artapp.domain.repositories.ArtworkRepository
@@ -16,16 +17,6 @@ class ArtworkRepositoryImpl(
     val artworksDatabase: ArtworksDatabase
 ): ArtworkRepository {
 
-    override suspend fun getArtworks(fieldTerms: String, pageNumber: Int): List<ArtworkModel> {
-       val response = artApi.getAllArt(fieldTerms, pageNumber)
-        if(response.isSuccessful ){
-            return response.body()?.artwork?.map { it.asDomain() }!!
-        }
-        return response.body()?.artwork?.map { it.asDomain() }!!
-    }
-
-
-//    fun getArtUsingPager()
 
     override suspend fun searchForArtworks(
         fieldTerms: String,

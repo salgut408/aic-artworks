@@ -8,6 +8,7 @@ data class ArtDetails(
     val artistDisplay: String? = "",
     val artistId: Int? = 0,
     val artistTitle: String? = "",
+    val provenanceText: String? = "",
     val artworkTypeTitle: String? = "",
     val classificationTitle: String? = "",
     val color: ColorModel? = ColorModel(),
@@ -29,4 +30,9 @@ data class ArtDetails(
     val subjectTitles: List<String?>? = listOf(),
     val themeTitles: List<String?>? = listOf(),
     val title: String? = "",
-)
+) {
+    fun getOtherImgUrl(): String {
+        val urlForDisplay = "https://www.artic.edu/iiif/2/${imageId}/full/843,/0/default.jpg"
+        return urlForDisplay
+    }
+}

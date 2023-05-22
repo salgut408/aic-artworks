@@ -21,6 +21,8 @@ data class DataDetailNetwork(
     val colorfulness: Double? = 0.0,
     @SerializedName("credit_line")
     val creditLine: String? = "",
+    @SerializedName("provenance_text")
+    val provenanceText: String? = "",
     @SerializedName("department_title")
     val departmentTitle: String? = "",
     @SerializedName("dimensions")
@@ -81,5 +83,6 @@ fun DataDetailNetwork.asDomain(): ArtDetails {
         subjectTitles = subjectTitles,
         themeTitles = themeTitles,
         title = title,
+        provenanceText = provenanceText
     )
 }

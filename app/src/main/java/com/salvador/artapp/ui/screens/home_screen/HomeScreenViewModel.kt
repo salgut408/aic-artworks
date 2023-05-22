@@ -100,10 +100,6 @@ class HomeScreenViewModel @Inject constructor(
             )
         }
     }
-    suspend fun loadMore(currentPage:Int, totalPages: Int){
-        if(currentPage <= totalPages) {
-            artworkRepository.getArtworks(FIELD_TERMS, currentPage)
-        }
-    }
+
 
 }

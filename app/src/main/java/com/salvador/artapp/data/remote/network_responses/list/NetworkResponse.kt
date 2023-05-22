@@ -8,7 +8,7 @@ data class NetworkResponse(
     @SerializedName("config")
     val config: Config = Config(),
     @SerializedName("data")
-    val artwork: List<Data> = listOf(),
+    val artwork: List<ArtDataNetwork> = listOf(),
     @SerializedName("info")
     val info: Info = Info(),
     @SerializedName("pagination")
