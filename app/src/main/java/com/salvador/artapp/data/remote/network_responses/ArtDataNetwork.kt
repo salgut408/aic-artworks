@@ -4,7 +4,7 @@ package com.salvador.artapp.data.remote.network_responses
 import com.google.gson.annotations.SerializedName
 import com.salvador.artapp.domain.domain_models.ArtworkModel
 
-data class Data(
+data class ArtDataNetwork(
     @SerializedName("artist_display")
     val artistDisplay: String? = "",
     @SerializedName("artist_title")
@@ -35,7 +35,7 @@ data class Data(
     val title: String? = ""
 )
 
-fun Data.asDomain(): ArtworkModel {
+fun ArtDataNetwork.asDomain(): ArtworkModel {
     return ArtworkModel(
         artistDisplay = artistDisplay ?: "",
         artistTitle = artistTitle ?: "",
