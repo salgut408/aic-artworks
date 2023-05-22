@@ -7,9 +7,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.salvador.artapp.data.repository_impls.paged.ArtSource
-import com.salvador.artapp.domain.domain_models.ArtworkModel
-import com.salvador.artapp.domain.domain_models.ConfigModel
-import com.salvador.artapp.domain.domain_models.PaginationModel
+import com.salvador.artapp.domain.domain_models.list.ArtworkModel
+import com.salvador.artapp.domain.domain_models.list.ConfigModel
+import com.salvador.artapp.domain.domain_models.list.PaginationModel
 import com.salvador.artapp.domain.repositories.ArtworkRepository
 import com.salvador.artapp.domain.use_cases.GetArtworksUseCase
 import com.salvador.artapp.utils.Constants.Companion.FIELD_TERMS
@@ -36,10 +36,21 @@ class HomeScreenViewModel @Inject constructor(
     init {
 
         loadAllArtworks()
+        loadSpecificArtwork()
     }
 
     private fun addAllToDb(art: List<ArtworkModel>) = viewModelScope.launch {
         artworkRepository.saveAllArt(art)
+    }
+
+    private fun loadSpecificArtwork() = viewModelScope.launch {
+        try {
+            val response = artworkRepository.getArtDetail("129884")
+            Log.e("SPEFICIC_ART_SUCC", response.toString())
+
+        } catch (e: Exception) {
+            Log.e("SPEFICIC_ART_ERROR", e.stackTraceToString())
+        }
     }
 
 
@@ -61,8 +72,6 @@ class HomeScreenViewModel @Inject constructor(
                     totalPages = pagination.totalPages
                 )
 
-                Log.e("CONFIG", config.toString())
-                Log.e("PAGINATION", pagination.toString())
                 Log.e("LISTUI_STATE", _listUiState.value.toString())
             }
         }

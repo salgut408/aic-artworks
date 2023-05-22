@@ -1,13 +1,11 @@
 package com.salvador.artapp.ui.screens.home_screen
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,18 +17,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.salvador.artapp.data.repository_impls.paged.ArtSource
-import com.salvador.artapp.domain.domain_models.ArtworkModel
+import com.salvador.artapp.domain.domain_models.list.ArtworkModel
 import com.salvador.artapp.ui.common_comps.ArtScaffold
 import com.salvador.artapp.ui.common_comps.ArtSurface
 import com.salvador.artapp.ui.common_comps.BasicImage
 import com.salvador.artapp.ui.common_comps.DefaultCard
-import com.salvador.artapp.utils.Constants.Companion.QUERY_PAGE_SIZE
 import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalMaterial3Api::class)

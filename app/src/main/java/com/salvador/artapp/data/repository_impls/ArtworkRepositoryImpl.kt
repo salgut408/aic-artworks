@@ -1,27 +1,24 @@
 package com.salvador.artapp.data.repository_impls
 
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import com.salvador.artapp.data.db.ArtworksDatabase
 import com.salvador.artapp.data.remote.api.ArtApi
-import com.salvador.artapp.data.remote.network_responses.asDomain
-import com.salvador.artapp.domain.domain_models.ArtResponseModel
-import com.salvador.artapp.domain.domain_models.ArtworkModel
-import com.salvador.artapp.domain.domain_models.ConfigModel
-import com.salvador.artapp.domain.domain_models.asArtworkDbEntity
+import com.salvador.artapp.data.remote.network_responses.detail.NetworkDetail
+import com.salvador.artapp.data.remote.network_responses.detail.asDomain
+import com.salvador.artapp.data.remote.network_responses.list.asDomain
+import com.salvador.artapp.domain.domain_models.detail.ArtDetail
+import com.salvador.artapp.domain.domain_models.list.ArtworkModel
+import com.salvador.artapp.domain.domain_models.list.asArtworkDbEntity
 import com.salvador.artapp.domain.repositories.ArtworkRepository
 import com.salvador.artapp.utils.Constants.Companion.FIELD_TERMS
-import kotlinx.coroutines.flow.Flow
 
 class ArtworkRepositoryImpl(
     val artApi: ArtApi,
     val artworksDatabase: ArtworksDatabase
 ): ArtworkRepository {
+
     override suspend fun getArtworks(fieldTerms: String, pageNumber: Int): List<ArtworkModel> {
        val response = artApi.getAllArt(fieldTerms, pageNumber)
         if(response.isSuccessful ){
-
             return response.body()?.artwork?.map { it.asDomain() }!!
         }
         return response.body()?.artwork?.map { it.asDomain() }!!
@@ -48,29 +45,20 @@ class ArtworkRepositoryImpl(
     }
 
     override suspend fun getArtDetail(
-        fieldTerms: String,
-        pageNumber: Int,
         id: String,
-    ): ArtworkModel {
-        TODO("Not yet implemented")
+    ): ArtDetail {
+       val response = artApi.getArtDetails(id)
+        if (response.isSuccessful){
+            return response.body()?.asDomain()!!
+        }
+        return response.body()?.asDomain()!!
+
     }
 
     override suspend fun getFullResponse(fieldTerms: String, pageNumber: Int) =
         artApi.getAllArt(FIELD_TERMS, pageNumber).body()?.asDomain()!!
 
 
-
-
-
-
-
-//
-//    suspend fun getPaginatedItems(page: Int, pageSize: Int): Result<List<ArtworkModel>> {
-//        val startingIndex = page * pageSize
-//        val response = artApi.getAllArt(FIELD_TERMS, page)
-//
-//        return if (startingIndex + pageSize <= (response.body()?.artwork?.size ?: listOf()))
-//    }
 
 
 }

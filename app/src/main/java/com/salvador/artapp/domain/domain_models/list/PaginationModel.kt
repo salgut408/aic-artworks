@@ -1,4 +1,4 @@
-package com.salvador.artapp.domain.domain_models
+package com.salvador.artapp.domain.domain_models.list
 
 data class PaginationModel(
     val currentPage: Int = 0,

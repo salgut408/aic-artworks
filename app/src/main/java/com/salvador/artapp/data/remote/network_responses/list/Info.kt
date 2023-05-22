@@ -1,8 +1,8 @@
-package com.salvador.artapp.data.remote.network_responses
+package com.salvador.artapp.data.remote.network_responses.list
 
 
 import com.google.gson.annotations.SerializedName
-import com.salvador.artapp.domain.domain_models.InfoModel
+import com.salvador.artapp.domain.domain_models.list.InfoModel
 
 data class Info(
     @SerializedName("license_links")

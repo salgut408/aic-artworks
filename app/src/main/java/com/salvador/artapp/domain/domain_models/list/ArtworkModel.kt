@@ -1,4 +1,4 @@
-package com.salvador.artapp.domain.domain_models
+package com.salvador.artapp.domain.domain_models.list
 
 import com.salvador.artapp.data.db.artwork_db.ArtworkDbEntity
 

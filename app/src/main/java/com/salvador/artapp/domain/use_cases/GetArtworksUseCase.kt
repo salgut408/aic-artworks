@@ -1,6 +1,6 @@
 package com.salvador.artapp.domain.use_cases
 
-import com.salvador.artapp.domain.domain_models.ArtworkModel
+import com.salvador.artapp.domain.domain_models.list.ArtworkModel
 import com.salvador.artapp.domain.repositories.ArtworkRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

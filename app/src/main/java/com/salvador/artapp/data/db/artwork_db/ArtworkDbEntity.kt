@@ -2,7 +2,7 @@ package com.salvador.artapp.data.db.artwork_db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.salvador.artapp.domain.domain_models.ArtworkModel
+import com.salvador.artapp.domain.domain_models.list.ArtworkModel
 
 @Entity(tableName = "artworks_table")
 data class ArtworkDbEntity(

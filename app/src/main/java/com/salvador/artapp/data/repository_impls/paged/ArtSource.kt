@@ -2,7 +2,7 @@ package com.salvador.artapp.data.repository_impls.paged
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.salvador.artapp.domain.domain_models.ArtworkModel
+import com.salvador.artapp.domain.domain_models.list.ArtworkModel
 import com.salvador.artapp.domain.repositories.ArtworkRepository
 import com.salvador.artapp.utils.Constants.Companion.FIELD_TERMS
 

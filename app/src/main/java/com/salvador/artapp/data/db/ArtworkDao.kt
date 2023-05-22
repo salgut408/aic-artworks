@@ -2,7 +2,6 @@ package com.salvador.artapp.data.db
 
 import androidx.room.*
 import com.salvador.artapp.data.db.artwork_db.ArtworkDbEntity
-import com.salvador.artapp.domain.domain_models.ArtworkModel
 
 @Dao
 interface ArtworkDao {

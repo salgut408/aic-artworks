@@ -1,6 +1,7 @@
 package com.salvador.artapp.data.remote.api
 
-import com.salvador.artapp.data.remote.network_responses.NetworkResponse
+import com.salvador.artapp.data.remote.network_responses.detail.NetworkDetail
+import com.salvador.artapp.data.remote.network_responses.list.NetworkResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -28,14 +29,9 @@ interface ArtApi {
 
     @GET("artworks/{id}")
     suspend fun getArtDetails(
-        @Query("fields")
-        fieldTerms: String,
-        @Query("page")
-        pageNumber: Int = 1,
         @Path("id")
         id: String? = null
-
-    ): Response<NetworkResponse>
+    ): Response<NetworkDetail>
 
     @GET("artworks/search")
     suspend fun searchForArt(

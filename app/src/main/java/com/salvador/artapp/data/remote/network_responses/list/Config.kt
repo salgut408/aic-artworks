@@ -1,8 +1,8 @@
-package com.salvador.artapp.data.remote.network_responses
+package com.salvador.artapp.data.remote.network_responses.list
 
 
 import com.google.gson.annotations.SerializedName
-import com.salvador.artapp.domain.domain_models.ConfigModel
+import com.salvador.artapp.domain.domain_models.list.ConfigModel
 
 data class Config(
     @SerializedName("iiif_url")
