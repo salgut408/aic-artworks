@@ -37,7 +37,6 @@ fun HomeScreen(
 
     val uiState by homeScreenViewModel.listUiState.collectAsStateWithLifecycle()
     val artworks = uiState.currentList
-    val pagination = uiState.pagination
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
 
@@ -180,7 +179,8 @@ fun ArtworkItem(
                 )
                 Column(
                     verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.Start
+                    horizontalAlignment = Alignment.Start,
+                    modifier = modifier.fillMaxWidth()
                 ) {
                     Text(text = artwork.artistDisplay, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
                     Text(text = artwork.styleTitle, style = MaterialTheme.typography.bodyMedium)
