@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -30,7 +31,7 @@ import kotlinx.coroutines.flow.Flow
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-//    navController: NavController,
+    navController: NavController,
     homeScreenViewModel: HomeScreenViewModel = hiltViewModel(),
 ) {
 
@@ -181,12 +182,13 @@ fun ArtworkItem(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.Start
                 ) {
-                    Text(text = artwork.artistDisplay, style = MaterialTheme.typography.bodyMedium, )
+                    Text(text = artwork.artistDisplay, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+                    Text(text = artwork.styleTitle, style = MaterialTheme.typography.bodyMedium)
                     Text(text = "Medium: ${artwork.mediumDisplay}", style = MaterialTheme.typography.bodyMedium)
                     Text(text = "Color Score: ${artwork.colorfullness.toString()}", style = MaterialTheme.typography.bodyMedium)
-                    Text(text = artwork.styleTitle, style = MaterialTheme.typography.bodyMedium)
-                    Text(text = "Provenance: ${artwork.provenanceText}", style = MaterialTheme.typography.bodyMedium)
 
+//                    TODO Fix Color ?
+//                    Text(text = artwork.color.toString(), style = MaterialTheme.typography.bodyMedium)
                 }
             }
         }

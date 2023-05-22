@@ -1,4 +1,8 @@
 package com.salvador.artapp.ui.application
 
-class ArtAppState {
+import androidx.navigation.NavHostController
+
+class ArtAppState(
+    val navController: NavHostController
+) {
 }

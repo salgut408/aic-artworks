@@ -2,6 +2,8 @@ package com.salvador.artapp.data.remote.network_responses.list
 
 
 import com.google.gson.annotations.SerializedName
+import com.salvador.artapp.data.remote.network_responses.detail.Color
+import com.salvador.artapp.data.remote.network_responses.detail.asDomain
 import com.salvador.artapp.domain.domain_models.list.ArtworkModel
 
 data class ArtDataNetwork(
@@ -32,7 +34,9 @@ data class ArtDataNetwork(
     @SerializedName("style_title")
     val styleTitle: String? = "",
     @SerializedName("title")
-    val title: String? = ""
+    val title: String? = "",
+    @SerializedName("color")
+    val color: Color? = Color(),
 )
 
 fun ArtDataNetwork.asDomain(): ArtworkModel {
@@ -50,7 +54,8 @@ fun ArtDataNetwork.asDomain(): ArtworkModel {
         provenanceText = provenanceText ?: "",
         styleTitle = styleTitle ?: "",
         title = title ?: "",
-        colorfullness = score ?: 0.0
+        colorfullness = score ?: 0.0,
+        color = color?.asDomain()
 
 
     )

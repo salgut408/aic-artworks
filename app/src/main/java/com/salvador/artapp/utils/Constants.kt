@@ -21,7 +21,8 @@ class Constants {
                 "artist_title," +
                 "place_of_origin," +
                 "credit_line," +
-                "colorfulness"
+                "colorfulness" +
+                "color"
         const val SEARCH_ART_TIME_DELAY = 600L
         const val QUERY_PAGE_SIZE = 10
     }

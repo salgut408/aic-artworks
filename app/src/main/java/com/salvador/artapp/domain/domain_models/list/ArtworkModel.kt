@@ -1,6 +1,7 @@
 package com.salvador.artapp.domain.domain_models.list
 
 import com.salvador.artapp.data.db.artwork_db.ArtworkDbEntity
+import com.salvador.artapp.domain.domain_models.detail.ColorModel
 
 data class ArtworkModel(
     val artistDisplay: String = "",
@@ -19,6 +20,8 @@ data class ArtworkModel(
     val isFavorite: Boolean = false,
     val imgConfigUrl: String = "",
     val colorfullness: Double = 0.0,
+    val color: ColorModel? = ColorModel(),
+
 
     ) {
     fun getOtherImgUrl(): String {
