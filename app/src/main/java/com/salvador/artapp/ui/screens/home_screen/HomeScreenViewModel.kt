@@ -1,9 +1,6 @@
 package com.salvador.artapp.ui.screens.home_screen
 
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -13,7 +10,6 @@ import com.salvador.artapp.data.repository_impls.paged.ArtSource
 import com.salvador.artapp.domain.domain_models.ArtworkModel
 import com.salvador.artapp.domain.domain_models.ConfigModel
 import com.salvador.artapp.domain.domain_models.PaginationModel
-import com.salvador.artapp.domain.domain_models.asArtworkDbEntity
 import com.salvador.artapp.domain.repositories.ArtworkRepository
 import com.salvador.artapp.domain.use_cases.GetArtworksUseCase
 import com.salvador.artapp.utils.Constants.Companion.FIELD_TERMS
@@ -51,7 +47,7 @@ class HomeScreenViewModel @Inject constructor(
 
         try {
             val response = artworkRepository.getFullResponse(FIELD_TERMS, artPage)
-            val artwork = response.artWork
+            val artwork = response.artWorks
             val config = response.config
             val pagination = response.pagination
             if (artwork.isNotEmpty()) {

@@ -13,8 +13,9 @@ class ArtSource(
         return try {
             val nextPage = params.key ?: 1
             val artListResponse = artworkRepository.getFullResponse(FIELD_TERMS, nextPage)
+            artworkRepository.saveAllArt(artListResponse.artWorks)
             LoadResult.Page(
-                data = artListResponse.artWork,
+                data = artListResponse.artWorks,
                 prevKey = if(nextPage == 1) null else nextPage -1,
                 nextKey = artListResponse.pagination.currentPage.plus(1)
             )

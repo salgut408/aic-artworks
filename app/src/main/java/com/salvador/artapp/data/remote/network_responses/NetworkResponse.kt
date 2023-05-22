@@ -18,7 +18,7 @@ data class NetworkResponse(
 fun NetworkResponse.asDomain(): ArtResponseModel {
     return ArtResponseModel(
         config = config.asDomain(),
-        artWork = artwork.map { it.asDomain() },
+        artWorks = artwork.map { it.asDomain() },
         info = info.asDomain(),
         pagination = pagination.asDomain()
     )
