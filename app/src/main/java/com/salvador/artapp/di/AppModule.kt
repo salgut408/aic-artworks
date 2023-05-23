@@ -7,6 +7,7 @@ import com.salvador.artapp.data.db.ArtworksDatabase
 import com.salvador.artapp.data.remote.api.ArtApi
 import com.salvador.artapp.data.repository_impls.ArtworkRepositoryImpl
 import com.salvador.artapp.domain.repositories.ArtworkRepository
+import com.salvador.artapp.domain.use_cases.GetArtDetailUseCase
 import com.salvador.artapp.domain.use_cases.GetArtworksUseCase
 import com.salvador.artapp.utils.Constants.Companion.BASE_URL
 import dagger.Module
@@ -28,6 +29,12 @@ object AppModule {
     fun provideArtworksListUseCase(
         artworkRepository: ArtworkRepository
     ): GetArtworksUseCase = GetArtworksUseCase(artworkRepository)
+
+    @Provides
+    fun provideArtDetailUseCase(
+        artworkRepository: ArtworkRepository
+    ): GetArtDetailUseCase = GetArtDetailUseCase(artworkRepository)
+
 
     @Provides
     fun provideArtworkDao(artworksDatabase: ArtworksDatabase): ArtworkDao = artworksDatabase.getArtworkDao()

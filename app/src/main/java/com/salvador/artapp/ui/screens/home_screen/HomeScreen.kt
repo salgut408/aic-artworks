@@ -28,6 +28,7 @@ import com.salvador.artapp.ui.common_comps.ArtScaffold
 import com.salvador.artapp.ui.common_comps.ArtSurface
 import com.salvador.artapp.ui.common_comps.BasicImage
 import com.salvador.artapp.ui.common_comps.DefaultCard
+import com.salvador.artapp.ui.navigation.NavigationScreens
 import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,10 +42,6 @@ fun HomeScreen(
     val artworks = uiState.currentList
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
 
-
-
-
-
     ArtScaffold(
         topBar = {
         HomeToolbar(
@@ -54,8 +51,12 @@ fun HomeScreen(
         content = { padding ->
             Column(modifier = Modifier.fillMaxWidth()) {
                 if (artworks.isNotEmpty()) {
-//                    ArtworkColumn(art = artworks, modifier = Modifier, paddingValues = padding)
-                    ArtworkList(artworks = homeScreenViewModel.art, contentPaddingValues = padding)
+                    ArtworkList(
+                        artworks = homeScreenViewModel.art,
+                        contentPaddingValues = padding,
+                        onArtworkClick = {  },
+                        navController = navController
+                    )
                 }
             }
         }
@@ -64,7 +65,12 @@ fun HomeScreen(
 
 //TODO Fix scrolling to top after config change
 @Composable
-fun ArtworkList(artworks: Flow<PagingData<ArtworkModel>>, contentPaddingValues: PaddingValues) {
+fun ArtworkList(
+    artworks: Flow<PagingData<ArtworkModel>>,
+    contentPaddingValues: PaddingValues,
+    onArtworkClick: (String) -> Unit,
+    navController: NavController
+) {
     val lazyArtItems = artworks.collectAsLazyPagingItems()
     val scrollState = rememberLazyListState()
     LazyColumn (
@@ -74,8 +80,10 @@ fun ArtworkList(artworks: Flow<PagingData<ArtworkModel>>, contentPaddingValues: 
         items(lazyArtItems) { art ->
             ArtworkCard(
                 artwork =art!! ,
-                onArtworkClick = { /*TODO*/ },
-                modifier = Modifier)
+                onArtworkClick = { },
+                modifier = Modifier,
+                navController = navController
+            )
         }
         lazyArtItems.apply {
             when {
@@ -109,33 +117,13 @@ fun ArtworkList(artworks: Flow<PagingData<ArtworkModel>>, contentPaddingValues: 
     }
 }
 
-@Composable
-fun ArtworkColumn(
-    art: List<ArtworkModel>,
-//    onArtClick: ()-> Unit,
-//    navController: NavController,
-    paddingValues: PaddingValues,
-    modifier: Modifier,
-) {
-    LazyColumn(
-        modifier = modifier,
-        contentPadding = paddingValues
-    ) {
-        items(art) { artwork ->
-            ArtworkCard(
-                artwork = artwork,
-                onArtworkClick = { /*TODO*/ },
-                modifier = modifier
-            )
-        }
-    }
-}
 
 @Composable
 fun ArtworkCard(
     artwork: ArtworkModel,
-    onArtworkClick: () -> Unit,
+    onArtworkClick: (String) -> Unit,
     modifier: Modifier,
+    navController: NavController
 
     ) {
     DefaultCard(
@@ -143,8 +131,9 @@ fun ArtworkCard(
         content = {
             ArtworkItem(
                 artwork = artwork,
-                onArtworkClick = { /*TODO*/ },
-                modifier = modifier
+                onArtworkClick = {onArtworkClick(artwork.id.toString()) },
+                modifier = modifier,
+                navController = navController
             )
 
         }
@@ -157,7 +146,7 @@ fun ArtworkItem(
     artwork: ArtworkModel,
     onArtworkClick: () -> Unit,
     modifier: Modifier,
-//    navController: NavController
+    navController: NavController
 ) {
     ArtSurface(
         shape = MaterialTheme.shapes.medium,
@@ -165,8 +154,13 @@ fun ArtworkItem(
     ) {
         Box(
             modifier = modifier
-                .clickable { }
+                .clickable { navController.navigate(
+                    NavigationScreens.DetailScreen.withArgs(
+                        artwork.id.toString()
+                    )
+                ) }
                 .padding(8.dp)
+
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -190,12 +184,6 @@ fun ArtworkItem(
                     modifier = modifier.fillMaxWidth()
                 ) {
                     Text(text = artwork.artistDisplay, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
-                    Text(text = artwork.styleTitle, style = MaterialTheme.typography.bodyMedium)
-                    Text(text = "Medium: ${artwork.mediumDisplay}", style = MaterialTheme.typography.bodyMedium)
-                    Text(text = "Color Score: ${artwork.colorfullness.toString()}", style = MaterialTheme.typography.bodyMedium)
-
-//                    TODO Fix Color ?
-//                    Text(text = artwork.color.toString(), style = MaterialTheme.typography.bodyMedium)
                 }
             }
         }

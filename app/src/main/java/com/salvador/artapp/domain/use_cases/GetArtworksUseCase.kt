@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class GetArtworksUseCase @Inject constructor(
     private val artworkRepository: ArtworkRepository,
-    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
+    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
     suspend operator fun invoke(fieldTerms: String, pageNumber: Int): ArtResponseModel =
         withContext(defaultDispatcher){

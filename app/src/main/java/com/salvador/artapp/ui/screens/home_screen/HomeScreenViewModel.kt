@@ -36,28 +36,18 @@ class HomeScreenViewModel @Inject constructor(
     init {
 
         loadAllArtworks()
-        loadSpecificArtwork()
     }
 
     private fun addAllToDb(art: List<ArtworkModel>) = viewModelScope.launch {
         artworkRepository.saveAllArt(art)
     }
 
-    private fun loadSpecificArtwork() = viewModelScope.launch {
-        try {
-            val response = artworkRepository.getArtDetail("129884")
-            Log.e("SPEFICIC_ART_SUCC", response.toString())
-
-        } catch (e: Exception) {
-            Log.e("SPEFICIC_ART_ERROR", e.stackTraceToString())
-        }
-    }
 
 
     private fun loadAllArtworks() = viewModelScope.launch {
 
         try {
-            val response = artworkRepository.getFullResponse(FIELD_TERMS, artPage)
+            val response = getArtworksUseCase(FIELD_TERMS, artPage)
             val artwork = response.artWorks
             val config = response.config
             val pagination = response.pagination
@@ -96,7 +86,6 @@ class HomeScreenViewModel @Inject constructor(
                 pagination = pagination,
                 currentPage = currentPage,
                 totalPages = totalPages
-
             )
         }
     }

@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import com.salvador.artapp.ui.application.ArtAppState
 import com.salvador.artapp.ui.screens.artwork_detail.DetailScreen
 import com.salvador.artapp.ui.screens.home_screen.HomeScreen
+import com.salvador.artapp.ui.screens.search.SearchScreen
 
 @Composable
 fun Navigation(
@@ -28,7 +29,12 @@ fun Navigation(
         ) {
             val id = it.arguments?.getString("id")
             HomeScreen(
-                navController = appState.navController
+                navController = appState.navController,
+//                onArtworkClick = {
+//                    appState.navController.navigate(
+//                        route = NavigationScreens.DetailScreen.route
+//                    )
+//                }
             )
         }
         composable(
@@ -41,7 +47,12 @@ fun Navigation(
         ) {
             entry ->
             val id = entry.arguments?.getString("id")!!
-            DetailScreen(id = id,)
+            DetailScreen(id = id, )
+        }
+        composable(
+            route = NavigationScreens.SearchScreen.route
+        ) {
+            SearchScreen(navController = appState.navController)
         }
     }
 

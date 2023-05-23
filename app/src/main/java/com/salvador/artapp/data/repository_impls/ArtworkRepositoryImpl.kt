@@ -43,7 +43,6 @@ class ArtworkRepositoryImpl(
             return response.body()?.asDomain()!!
         }
         return response.body()?.asDomain()!!
-
     }
 
     override suspend fun getFullResponse(fieldTerms: String, pageNumber: Int) =
