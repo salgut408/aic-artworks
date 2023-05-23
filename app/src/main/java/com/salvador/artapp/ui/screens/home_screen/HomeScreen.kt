@@ -3,7 +3,9 @@ package com.salvador.artapp.ui.screens.home_screen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -60,10 +62,15 @@ fun HomeScreen(
     )
 }
 
+//TODO Fix scrolling to top after config change
 @Composable
 fun ArtworkList(artworks: Flow<PagingData<ArtworkModel>>, contentPaddingValues: PaddingValues) {
     val lazyArtItems = artworks.collectAsLazyPagingItems()
-    LazyColumn (contentPadding = contentPaddingValues) {
+    val scrollState = rememberLazyListState()
+    LazyColumn (
+        contentPadding = contentPaddingValues,
+        state = scrollState
+    ) {
         items(lazyArtItems) { art ->
             ArtworkCard(
                 artwork =art!! ,
