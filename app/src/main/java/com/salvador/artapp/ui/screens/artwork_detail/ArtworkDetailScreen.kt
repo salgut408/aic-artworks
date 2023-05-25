@@ -4,8 +4,10 @@ import android.graphics.ColorSpace.Rgb
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -61,11 +63,18 @@ fun DetailScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /*TODO*/ },
-                content = { Icons.Default.Add },
+                onClick = {
+                    //OnClick Method
+                },
                 containerColor = dominantColor,
-
-            )
+                shape = RoundedCornerShape(16.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Add,
+                    contentDescription = "Add FAB",
+                    tint = Color.White,
+                )
+            }
         },
 
         content = { paddingValues ->

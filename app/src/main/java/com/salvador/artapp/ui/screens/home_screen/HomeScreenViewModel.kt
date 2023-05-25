@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.google.android.gms.common.internal.Asserts
 import com.salvador.artapp.data.repository_impls.paged.ArtSource
 import com.salvador.artapp.domain.domain_models.list.ArtworkModel
 import com.salvador.artapp.domain.domain_models.list.ConfigModel
@@ -13,10 +14,14 @@ import com.salvador.artapp.domain.domain_models.list.PaginationModel
 import com.salvador.artapp.domain.repositories.ArtworkRepository
 import com.salvador.artapp.domain.use_cases.GetArtworksUseCase
 import com.salvador.artapp.utils.Constants.Companion.FIELD_TERMS
+import com.salvador.artapp.utils.printToLog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+data class Pixel(val red: Int, val green: Int, val blue: Int)
+
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
@@ -26,14 +31,18 @@ class HomeScreenViewModel @Inject constructor(
     private val _listUiState = MutableStateFlow(ListUiState(isLoading = true))
     val listUiState: StateFlow<ListUiState> = _listUiState.asStateFlow()
 
-    val art: Flow<PagingData<ArtworkModel>> = Pager(PagingConfig(pageSize = 20)){
+    val art: Flow<PagingData<ArtworkModel>> = Pager(PagingConfig(pageSize = 20)) {
         ArtSource(artworkRepository)
     }.flow
+
+
+
 
     var artPage = 1
     var searchingArtPage = 1
 
     init {
+
 
         loadAllArtworks()
     }
@@ -41,7 +50,6 @@ class HomeScreenViewModel @Inject constructor(
     private fun addAllToDb(art: List<ArtworkModel>) = viewModelScope.launch {
         artworkRepository.saveAllArt(art)
     }
-
 
 
     private fun loadAllArtworks() = viewModelScope.launch {
@@ -75,7 +83,7 @@ class HomeScreenViewModel @Inject constructor(
         config: ConfigModel,
         pagination: PaginationModel,
         currentPage: Int,
-        totalPages:Int
+        totalPages: Int,
     ) {
         _listUiState.update {
             it.copy(

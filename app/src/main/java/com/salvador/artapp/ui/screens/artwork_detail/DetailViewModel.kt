@@ -35,9 +35,28 @@ class DetailViewModel @Inject constructor(
     private val _detailUiState = MutableStateFlow(DetailUiState())
     val detailUiState: StateFlow<DetailUiState> = _detailUiState.asStateFlow()
 
+    val boardSize = 3
+    val board = Array(boardSize) {Array(boardSize) {'-'} }
+
 
     init {
 
+        for (i in board) {
+            for (j in i)
+            print("${j}")
+            println()
+        }
+
+        for (row in 0 until boardSize) {
+
+            for (col in 0 until boardSize) {
+
+                print("${board[row][col]}")
+
+//                Log.e("FML", "${board[row][col]}")
+            }
+            println()
+        }
     }
 
     fun fetchColors(url: String, context: Context, onCalculated: (Color) -> Unit) {
