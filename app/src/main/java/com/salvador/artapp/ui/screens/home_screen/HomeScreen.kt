@@ -1,18 +1,23 @@
 package com.salvador.artapp.ui.screens.home_screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.BottomNavigation
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -41,6 +46,7 @@ fun HomeScreen(
     val uiState by homeScreenViewModel.listUiState.collectAsStateWithLifecycle()
     val artworks = uiState.currentList
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+    val screens = listOf(NavigationScreens.HomeScreen, NavigationScreens.SearchScreen)
 
     ArtScaffold(
         topBar = {
@@ -73,6 +79,12 @@ fun ArtworkList(
 ) {
     val lazyArtItems = artworks.collectAsLazyPagingItems()
     val scrollState = rememberLazyListState()
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+
+    }
+
+
     LazyColumn (
         contentPadding = contentPaddingValues,
         state = scrollState
@@ -115,6 +127,8 @@ fun ArtworkList(
             }
         }
     }
+
+
 }
 
 
@@ -154,11 +168,13 @@ fun ArtworkItem(
     ) {
         Box(
             modifier = modifier
-                .clickable { navController.navigate(
-                    NavigationScreens.DetailScreen.withArgs(
-                        artwork.id.toString()
+                .clickable {
+                    navController.navigate(
+                        NavigationScreens.DetailScreen.withArgs(
+                            artwork.id.toString()
+                        )
                     )
-                ) }
+                }
                 .padding(8.dp)
 
         ) {
@@ -167,16 +183,18 @@ fun ArtworkItem(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
+
+
                 Text(text = artwork.title, style = MaterialTheme.typography.displaySmall, maxLines = 2, overflow = TextOverflow.Ellipsis)
                 BasicImage(
                     modifier = modifier,
                     imgUrl = artwork.getOtherImgUrl(),
                     contentDescription = artwork.title,
                     elevation = 1.dp,
-                    backgroundColor = Color.White,
-                    borderWidth = 1.dp,
+                    backgroundColor = Color.Transparent,
+                    borderWidth = 0.dp,
                     shape = RectangleShape,
-                    borderColor = Color.LightGray
+                    borderColor = Color.Transparent
                 )
                 Column(
                     verticalArrangement = Arrangement.Center,
@@ -253,3 +271,99 @@ fun ErrorItem(
         }
     }
 }
+
+@Composable
+fun SearchBar(
+    modifier: Modifier = Modifier,
+    hint: String = "",
+    onSearch: (String) -> Unit = {}
+
+) {
+    var text by remember { mutableStateOf( "") }
+    var isHintDisplayed by remember { mutableStateOf(hint != "") }
+
+    Box(modifier = Modifier.fillMaxWidth()) {
+        BasicTextField(
+            value = text ,
+            onValueChange = {
+                text = it
+                onSearch(it)
+            },
+            maxLines = 1,
+            singleLine = true,
+            textStyle = TextStyle(color = Color.DarkGray),
+            modifier = Modifier
+                .fillMaxWidth()
+                .shadow(5.dp, CircleShape)
+                .background(Color.White, CircleShape)
+                .padding(8.dp)
+        )
+        if(isHintDisplayed){
+            Text(
+                text = hint,
+                color = Color.LightGray,
+                modifier = modifier.padding(horizontal = 20.dp, vertical = 12.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun BottomNavigationBar(
+    navController: NavController,
+    items: List<NavigationScreens>
+) {
+    BottomNavigation() {
+//        val currentRoute = cu
+    }
+
+}
+
+@Composable
+fun SearchBar2(
+    modifier: Modifier = Modifier,
+    hint: String = "",
+    onSearch: (String) -> Unit = {}
+) {
+    var text by remember { mutableStateOf("") }
+    var isHintDisplayed by remember { mutableStateOf(hint != "") }
+    Box(modifier = modifier) {
+        BasicTextField(value = text,
+            onValueChange = {
+                text = it
+                onSearch(it)
+            },
+            maxLines = 1,
+            singleLine = true,
+            textStyle = TextStyle(color = Color.Black),
+            modifier = Modifier
+                .fillMaxWidth()
+                .shadow(5.dp, CircleShape)
+                .background(Color.White, CircleShape)
+                .padding(horizontal = 20.dp, vertical = 12.dp)
+        )
+        if (isHintDisplayed) {
+            Text(
+                text = hint,
+                color = Color.LightGray,
+                modifier = Modifier
+                    .padding(horizontal = 20.dp, vertical = 12.dp)
+
+            )
+        }
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

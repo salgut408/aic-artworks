@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.salvador.artapp.ui.common_comps.ArtScaffold
 import com.salvador.artapp.ui.navigation.Navigation
 import kotlinx.coroutines.CoroutineScope
 
@@ -21,6 +22,7 @@ fun ArtApp(
 ) {
     val appState = rememberAppState()
     val backStackEntry by appState.navController.currentBackStackEntryAsState()
+
 
     Scaffold() { innerPadding ->
         Navigation(appState = appState, padding = innerPadding)

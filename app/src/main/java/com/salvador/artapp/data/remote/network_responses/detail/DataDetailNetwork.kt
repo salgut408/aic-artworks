@@ -3,12 +3,13 @@ package com.salvador.artapp.data.remote.network_responses.detail
 
 import com.google.gson.annotations.SerializedName
 import com.salvador.artapp.domain.domain_models.detail.ArtDetails
+import com.salvador.artapp.domain.domain_models.detail.ColorModel
 
 data class DataDetailNetwork(
     @SerializedName("artist_display")
     val artistDisplay: String? = "",
     @SerializedName("artist_id")
-    val artistId: Int? = 0,
+    val artistId: String? = "0",
     @SerializedName("artist_title")
     val artistTitle: String? = "",
     @SerializedName("artwork_type_title")
@@ -30,7 +31,7 @@ data class DataDetailNetwork(
     @SerializedName("gallery_title")
     val galleryTitle: String? = "",
     @SerializedName("id")
-    val id: Int? = 0,
+    val id: String? = "",
     @SerializedName("image_id")
     val imageId: String? = "",
     @SerializedName("is_on_view")
@@ -48,41 +49,41 @@ data class DataDetailNetwork(
     @SerializedName("style_title")
     val styleTitle: String? = "",
     @SerializedName("style_titles")
-    val styleTitles: List<String?>? = listOf(),
+    val styleTitles: List<String>? = listOf(),
     @SerializedName("subject_titles")
-    val subjectTitles: List<String?>? = listOf(),
+    val subjectTitles: List<String>? = listOf(),
     @SerializedName("theme_titles")
-    val themeTitles: List<String?>? = listOf(),
+    val themeTitles: List<String>? = listOf(),
     @SerializedName("title")
     val title: String? = "",
 )
 
 fun DataDetailNetwork.asDomain(): ArtDetails {
     return ArtDetails(
-        artistDisplay = artistDisplay,
-        artistId = artistId,
-        artistTitle = artistTitle,
-        artworkTypeTitle = artworkTypeTitle,
-        classificationTitle = classificationTitle,
-        color = color?.asDomain(),
-        colorfulness = colorfulness,
-        creditLine = creditLine,
-        departmentTitle = departmentTitle,
-        dimensions = dimensions,
-        galleryTitle = galleryTitle,
-        id = id,
-        imageId = imageId,
-        isOnView = isOnView,
-        latitude = latitude,
-        latlon = latlon,
-        longitude = longitude,
-        mediumDisplay = mediumDisplay,
-        placeOfOrigin = placeOfOrigin,
-        styleTitle = styleTitle,
-        styleTitles = styleTitles,
-        subjectTitles = subjectTitles,
-        themeTitles = themeTitles,
-        title = title,
-        provenanceText = provenanceText
+        artistDisplay = artistDisplay ?: "",
+        artistId = artistId ?: "",
+        artistTitle = artistTitle ?: "",
+        artworkTypeTitle = artworkTypeTitle ?: "",
+        classificationTitle = classificationTitle ?: "",
+        color = color?.asDomain() ?: ColorModel(),
+        colorfulness = colorfulness ?: 0.0,
+        creditLine = creditLine ?: "",
+        departmentTitle = departmentTitle ?: "",
+        dimensions = dimensions ?: "",
+        galleryTitle = galleryTitle ?: "",
+        id = id ?: "",
+        imageId = imageId ?: "",
+        isOnView = isOnView ?: false,
+        latitude = latitude ?: 0.0,
+        latlon = latlon ?: "",
+        longitude = longitude ?: 0.0,
+        mediumDisplay = mediumDisplay ?: "",
+        placeOfOrigin = placeOfOrigin ?: "",
+        styleTitle = styleTitle ?: "",
+        styleTitles = styleTitles ?: listOf(),
+        subjectTitles = subjectTitles?: listOf(),
+        themeTitles = themeTitles ?: listOf(),
+        title = title ?: "",
+        provenanceText = provenanceText ?: ""
     )
 }

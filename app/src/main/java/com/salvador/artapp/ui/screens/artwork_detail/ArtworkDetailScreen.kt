@@ -4,15 +4,14 @@ import android.graphics.ColorSpace.Rgb
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -34,14 +33,13 @@ fun DetailScreen(
 
     detailViewModel.loadArtwork(id)
     val defaultDomColor = MaterialTheme.colorScheme.background
-    var dominantColor by remember {
-        mutableStateOf(defaultDomColor)
-    }
+    var dominantColor by remember { mutableStateOf(defaultDomColor) }
+    var textColor by remember { mutableStateOf(defaultDomColor) }
+
 
     val uiState by detailViewModel.detailUiState.collectAsStateWithLifecycle()
     val artwork = uiState.art.artData!!
-    val color = artwork.color
-    Log.e("DETAILS_VM", artwork.toString())
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
     val pic = artwork.getOtherImgUrl()
     pic.let {
@@ -51,10 +49,17 @@ fun DetailScreen(
     }
 
     ArtScaffold(
-        content = {
+        topBar = {
+            DetailToolbar(
+                title = artwork.title ?: "",
+                modifier = modifier.background(textColor),
+                scrollBehavior = scrollBehavior
+            ) },
+        content = { paddingValues ->
             DetailContent(
                 artwork = artwork, modifier = modifier,
-                dominantColor = dominantColor
+                dominantColor = dominantColor,
+                contenPaddingValues = paddingValues
             )
         }
     )
@@ -67,37 +72,91 @@ fun DetailContent(
     artwork: ArtDetails,
     modifier: Modifier,
     dominantColor: Color,
+    contenPaddingValues: PaddingValues
 ) {
     Column(
         modifier = modifier
             .background(
-                dominantColor
+                Color.White
             )
-            .fillMaxSize(),
+            .padding(16.dp)
+            .fillMaxSize()
+            .padding(contenPaddingValues)
+        ,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+
     ) {
-        Text(
-            text = artwork.title ?: "0",
-            style = MaterialTheme.typography.headlineLarge,
-        )
-        BasicImage(
-            modifier = modifier.size(300.dp),
-            imgUrl = artwork.getOtherImgUrl(),
-            contentDescription = artwork.title,
-            elevation = 0.dp,
-            backgroundColor = Color.Transparent,
-            borderWidth = 0.dp,
-            borderColor = Color.Transparent,
-            shape = RectangleShape,
-        )
+        Box(
+            modifier = modifier.fillMaxWidth()
+                .background(dominantColor)
+        ) {
+            BasicImage(
+                modifier = modifier
+                    .size(300.dp)
+                    .fillMaxWidth(),
+                imgUrl = artwork.getOtherImgUrl(),
+                contentDescription = artwork.title,
+                elevation = 0.dp,
+                backgroundColor = Color.White,
+                borderWidth = 10.dp,
+                borderColor = Color.White,
+                shape = RectangleShape,
+            )
+        }
 
-        Text(text = "Medium: ${artwork.mediumDisplay}", style = MaterialTheme.typography.bodyMedium)
 
 
-        Text(
-            text = artwork.color.toString() ?: "0",
-            style = MaterialTheme.typography.headlineLarge,
-        )
+        ArtInfoCollumn(modifier = modifier, artwork = artwork)
+
+
     }
+}
+
+@Composable
+fun ArtInfoCollumn(modifier: Modifier, artwork: ArtDetails) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.Start
+    ) {
+
+        Text(text = artwork.artistDisplay ?: "", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+        Text(text = artwork.mediumDisplay ?: "", style = MaterialTheme.typography.bodyMedium)
+        Text(text = artwork.dimensions ?: "", style = MaterialTheme.typography.bodyMedium)
+        Text(text = "Style: ${artwork.departmentTitle.toString()}", style = MaterialTheme.typography.bodyMedium)
+
+        Text(text = "Is on view: ${artwork.isOnView.toString()}", style = MaterialTheme.typography.bodyMedium)
+        Text(text = "AIC Department: ${artwork.departmentTitle.toString()}", style = MaterialTheme.typography.bodyMedium)
+        Spacer(modifier = modifier.height(8.dp))
+        ThemesList(list = artwork.themeTitles, modifier = modifier )
+    }
+}
+
+
+@Composable
+fun ThemesList(list: List<String>, modifier: Modifier) {
+    Column(
+        modifier = modifier.padding(start = 6.dp)
+    ) {
+        Text(text = "Themes")
+        list.map { theme ->
+            Text(text = "- ${theme}", fontWeight = FontWeight.Bold)
+        }
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DetailToolbar(
+    title: String,
+    modifier: Modifier,
+    scrollBehavior: TopAppBarScrollBehavior,
+) {
+    CenterAlignedTopAppBar(
+        title = { Text(text = title, fontWeight = FontWeight.Bold) },
+        navigationIcon = {},
+        scrollBehavior = scrollBehavior
+    )
+
 }

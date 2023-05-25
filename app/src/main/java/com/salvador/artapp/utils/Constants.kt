@@ -1,5 +1,7 @@
 package com.salvador.artapp.utils
 
+import android.util.Log
+
 class Constants {
     companion object {
         const val BASE_URL = " https://api.artic.edu/api/v1/"
@@ -26,4 +28,8 @@ class Constants {
         const val SEARCH_ART_TIME_DELAY = 600L
         const val QUERY_PAGE_SIZE = 10
     }
+}
+
+fun Any?.printToLog(tag: String = "DEBUG_LOG") {
+    Log.d(tag, toString())
 }

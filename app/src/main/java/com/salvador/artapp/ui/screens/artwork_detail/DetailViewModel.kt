@@ -6,6 +6,8 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.compose.ui.graphics.Color
+import androidx.core.graphics.toColor
+import androidx.core.graphics.toColorLong
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
@@ -15,6 +17,7 @@ import coil.request.SuccessResult
 import com.salvador.artapp.domain.domain_models.detail.ArtDetail
 import com.salvador.artapp.domain.repositories.ArtworkRepository
 import com.salvador.artapp.domain.use_cases.GetArtDetailUseCase
+import com.salvador.artapp.utils.printToLog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,12 +36,11 @@ class DetailViewModel @Inject constructor(
     val detailUiState: StateFlow<DetailUiState> = _detailUiState.asStateFlow()
 
 
-
     init {
 
     }
 
-    fun fetchColors(url: String, context: Context, onCalculated: (Color)->Unit) {
+    fun fetchColors(url: String, context: Context, onCalculated: (Color) -> Unit) {
         viewModelScope.launch {
             val req = ImageRequest.Builder(context)
                 .data(url)
@@ -53,11 +55,44 @@ class DetailViewModel @Inject constructor(
         }
     }
 
+    fun getColorsMap(drawable: Drawable, onFinish: (List<Color>) -> Unit) {
+        val bmp = (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
+        Palette.from(bmp).generate(fun(palette: Palette?) {
+            val vibrantColor = palette?.vibrantSwatch?.rgb
+            val vibrantBodyTextColor = palette?.vibrantSwatch?.rgb
+            val dominanColor = palette?.dominantSwatch?.titleTextColor?.toColor()
+            val dominantBodyTextColor = palette?.dominantSwatch?.bodyTextColor?.toColor()
+            val darkMutedTitleTextColor = palette?.darkMutedSwatch?.titleTextColor?.toColor()
+            val darkMutedBodyTextColor = palette?.darkMutedSwatch?.bodyTextColor?.toColor()
+            val darkVibrantTitleTextColor = palette?.darkVibrantSwatch?.titleTextColor?.toColor()
+            val darkVibrantBodyTextColor = palette?.darkVibrantSwatch?.bodyTextColor?.toColor()
+            val lightVibrantTitleTextColor = palette?.lightVibrantSwatch?.titleTextColor?.toColor()
+            val lightVibrantBodyTextColor = palette?.lightVibrantSwatch?.bodyTextColor?.toColor()
+            val lightMutedTitleTextColor = palette?.lightMutedSwatch?.bodyTextColor?.toColor()
+            val lightMutedBodyTextColor = palette?.lightMutedSwatch?.bodyTextColor?.toColor()
+            val mutedTitleTextColor = palette?.mutedSwatch?.titleTextColor?.toColor()
+            val mutedBodyTextColor = palette?.mutedSwatch?.bodyTextColor?.toColor()
+            onFinish(listOf(Color(vibrantColor!!), Color(vibrantBodyTextColor!!)))
+
+
+        })
+    }
 
     fun calcDominantColor(drawable: Drawable, onFinish: (Color) -> Unit) {
         val bmp = (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
         Palette.from(bmp).generate() { palette ->
             palette?.dominantSwatch?.rgb?.let { colorValue ->
+                onFinish(Color(colorValue))
+
+            }
+        }
+    }
+
+
+    fun calcMutedColor(drawable: Drawable, onFinish: (Color) -> Unit) {
+        val bmp = (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
+        Palette.from(bmp).generate() { palette ->
+            palette?.mutedSwatch?.rgb?.let { colorValue ->
                 onFinish(Color(colorValue))
             }
         }

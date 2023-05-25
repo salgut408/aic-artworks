@@ -62,7 +62,6 @@ class HomeScreenViewModel @Inject constructor(
                     totalPages = pagination.totalPages
                 )
 
-                Log.e("LISTUI_STATE", _listUiState.value.toString())
             }
         }
         catch (e: Exception) {
