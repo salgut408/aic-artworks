@@ -4,6 +4,8 @@ import android.graphics.ColorSpace.Rgb
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,6 +15,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -52,12 +55,23 @@ fun DetailScreen(
         topBar = {
             DetailToolbar(
                 title = artwork.title ?: "",
-                modifier = modifier.background(textColor),
-                scrollBehavior = scrollBehavior
-            ) },
+                modifier = modifier.background(dominantColor),
+                scrollBehavior = scrollBehavior,
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { /*TODO*/ },
+                content = { Icons.Default.Add },
+                containerColor = dominantColor,
+
+            )
+        },
+
         content = { paddingValues ->
             DetailContent(
-                artwork = artwork, modifier = modifier,
+                artwork = artwork,
+                modifier = modifier,
                 dominantColor = dominantColor,
                 contenPaddingValues = paddingValues
             )
@@ -72,7 +86,7 @@ fun DetailContent(
     artwork: ArtDetails,
     modifier: Modifier,
     dominantColor: Color,
-    contenPaddingValues: PaddingValues
+    contenPaddingValues: PaddingValues,
 ) {
     Column(
         modifier = modifier
@@ -81,13 +95,13 @@ fun DetailContent(
             )
             .padding(16.dp)
             .fillMaxSize()
-            .padding(contenPaddingValues)
-        ,
+            .padding(contenPaddingValues),
         horizontalAlignment = Alignment.CenterHorizontally,
 
-    ) {
+        ) {
         Box(
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
                 .background(dominantColor)
         ) {
             BasicImage(
@@ -115,20 +129,28 @@ fun DetailContent(
 @Composable
 fun ArtInfoCollumn(modifier: Modifier, artwork: ArtDetails) {
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
     ) {
 
-        Text(text = artwork.artistDisplay ?: "", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
-        Text(text = artwork.mediumDisplay ?: "", style = MaterialTheme.typography.bodyMedium)
-        Text(text = artwork.dimensions ?: "", style = MaterialTheme.typography.bodyMedium)
-        Text(text = "Style: ${artwork.departmentTitle.toString()}", style = MaterialTheme.typography.bodyMedium)
+        Text(text = artwork.artistDisplay,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp)
+        Text(text = artwork.mediumDisplay, style = MaterialTheme.typography.bodyMedium)
+        Text(text = artwork.dimensions, style = MaterialTheme.typography.bodyMedium)
+        Text(text = "Style: ${artwork.departmentTitle}",
+            style = MaterialTheme.typography.bodyMedium)
 
-        Text(text = "Is on view: ${artwork.isOnView.toString()}", style = MaterialTheme.typography.bodyMedium)
-        Text(text = "AIC Department: ${artwork.departmentTitle.toString()}", style = MaterialTheme.typography.bodyMedium)
+        Text(text = "Is on view: ${artwork.isOnView.toString()}",
+            style = MaterialTheme.typography.bodyMedium)
+        Text(text = "AIC Department: ${artwork.departmentTitle}",
+            style = MaterialTheme.typography.bodyMedium)
         Spacer(modifier = modifier.height(8.dp))
-        ThemesList(list = artwork.themeTitles, modifier = modifier )
+        ThemesList(list = artwork.themeTitles, modifier = modifier)
     }
 }
 
@@ -136,11 +158,11 @@ fun ArtInfoCollumn(modifier: Modifier, artwork: ArtDetails) {
 @Composable
 fun ThemesList(list: List<String>, modifier: Modifier) {
     Column(
-        modifier = modifier.padding(start = 6.dp)
+        modifier = modifier
     ) {
-        Text(text = "Themes")
+        Text(text = "Themes", fontSize = 16.sp, fontWeight = FontWeight.Bold)
         list.map { theme ->
-            Text(text = "- ${theme}", fontWeight = FontWeight.Bold)
+            Text(text = "- ${theme}", modifier = modifier.padding(start = 6.dp))
         }
     }
 }
@@ -156,7 +178,7 @@ fun DetailToolbar(
     CenterAlignedTopAppBar(
         title = { Text(text = title, fontWeight = FontWeight.Bold) },
         navigationIcon = {},
-        scrollBehavior = scrollBehavior
+        scrollBehavior = scrollBehavior,
     )
 
 }
