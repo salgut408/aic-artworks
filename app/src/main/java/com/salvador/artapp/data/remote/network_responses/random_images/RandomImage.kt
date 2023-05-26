@@ -2,34 +2,17 @@ package com.salvador.artapp.data.remote.network_responses.random_images
 
 
 import com.google.gson.annotations.SerializedName
+import com.salvador.artapp.domain.domain_models.random_image.RandomImageModel
 
 data class RandomImage(
-    @SerializedName("ahash")
-    val ahash: Ahash? = Ahash(),
-    @SerializedName("alt_text")
-    val altText: Any? = Any(),
     @SerializedName("api_link")
     val apiLink: String? = "",
     @SerializedName("api_model")
     val apiModel: String? = "",
-    @SerializedName("artwork_ids")
-    val artworkIds: List<Int?>? = listOf(),
-    @SerializedName("artwork_titles")
-    val artworkTitles: List<String?>? = listOf(),
     @SerializedName("color")
     val color: Color? = Color(),
     @SerializedName("colorfulness")
     val colorfulness: Double? = 0.0,
-    @SerializedName("content")
-    val content: Any? = Any(),
-    @SerializedName("content_e_tag")
-    val contentETag: String? = "",
-    @SerializedName("credit_line")
-    val creditLine: Any? = Any(),
-    @SerializedName("fingerprint")
-    val fingerprint: Fingerprint? = Fingerprint(),
-    @SerializedName("height")
-    val height: Int? = 0,
     @SerializedName("id")
     val id: String? = "",
     @SerializedName("iiif_url")
@@ -44,8 +27,6 @@ data class RandomImage(
     val lakeGuid: String? = "",
     @SerializedName("lqip")
     val lqip: String? = "",
-    @SerializedName("phash")
-    val phash: Phash? = Phash(),
     @SerializedName("source_updated_at")
     val sourceUpdatedAt: String? = "",
     @SerializedName("timestamp")
@@ -59,3 +40,16 @@ data class RandomImage(
     @SerializedName("width")
     val width: Int? = 0
 )
+
+fun RandomImage.asDomain(): RandomImageModel {
+    return RandomImageModel(
+        color = color,
+        colorfulness = colorfulness,
+        iiifUrl = iiifUrl,
+        id = id,
+        lakeGuid = lakeGuid,
+        title = title,
+        type = type,
+        width = width
+    )
+}
