@@ -59,6 +59,9 @@ interface ArtApi {
         pageNumber: Int
     ): Response<ExhibitionsNetworkResponse>
 
+
+//    https://api.artic.edu/api/v1/images?limit=2
+
 //    https://api.artic.edu/api/v1/exhibitions
 //    ExhibitionsNetworkResponse
 // //    /artworks/{id}
