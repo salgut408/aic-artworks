@@ -54,28 +54,52 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun getColorsMap(drawable: Drawable, onFinish: (List<Color>) -> Unit) {
-        val bmp = (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
-        Palette.from(bmp).generate(fun(palette: Palette?) {
-            val vibrantColor = palette?.vibrantSwatch?.rgb
-            val vibrantBodyTextColor = palette?.vibrantSwatch?.rgb
-            val dominanColor = palette?.dominantSwatch?.titleTextColor?.toColor()
-            val dominantBodyTextColor = palette?.dominantSwatch?.bodyTextColor?.toColor()
-            val darkMutedTitleTextColor = palette?.darkMutedSwatch?.titleTextColor?.toColor()
-            val darkMutedBodyTextColor = palette?.darkMutedSwatch?.bodyTextColor?.toColor()
-            val darkVibrantTitleTextColor = palette?.darkVibrantSwatch?.titleTextColor?.toColor()
-            val darkVibrantBodyTextColor = palette?.darkVibrantSwatch?.bodyTextColor?.toColor()
-            val lightVibrantTitleTextColor = palette?.lightVibrantSwatch?.titleTextColor?.toColor()
-            val lightVibrantBodyTextColor = palette?.lightVibrantSwatch?.bodyTextColor?.toColor()
-            val lightMutedTitleTextColor = palette?.lightMutedSwatch?.bodyTextColor?.toColor()
-            val lightMutedBodyTextColor = palette?.lightMutedSwatch?.bodyTextColor?.toColor()
-            val mutedTitleTextColor = palette?.mutedSwatch?.titleTextColor?.toColor()
-            val mutedBodyTextColor = palette?.mutedSwatch?.bodyTextColor?.toColor()
-            onFinish(listOf(Color(vibrantColor!!), Color(vibrantBodyTextColor!!)))
-
-
-        })
+    fun fetchVibrantColors(url: String, context: Context, onCalculated: (Color) -> Unit) {
+        viewModelScope.launch {
+            val req = ImageRequest.Builder(context)
+                .data(url)
+                .allowHardware(false)
+                .build()
+            val result = req.context.imageLoader.execute(req)
+            if (result is SuccessResult) {
+                calcVibrantColor(result.drawable) { color ->
+                    onCalculated(color)
+                }
+            }
+        }
     }
+
+    fun fetchLightVibrantColors(url: String, context: Context, onCalculated: (Color) -> Unit) {
+        viewModelScope.launch {
+            val req = ImageRequest.Builder(context)
+                .data(url)
+                .allowHardware(false)
+                .build()
+            val result = req.context.imageLoader.execute(req)
+            if (result is SuccessResult) {
+                calcLightMutedColor(result.drawable) { color ->
+                    onCalculated(color)
+                }
+            }
+        }
+    }
+
+    fun fetchDarkMutedColors(url: String, context: Context, onCalculated: (Color) -> Unit) {
+        viewModelScope.launch {
+            val req = ImageRequest.Builder(context)
+                .data(url)
+                .allowHardware(false)
+                .build()
+            val result = req.context.imageLoader.execute(req)
+            if (result is SuccessResult) {
+                calcDarkMutedColor(result.drawable) { color ->
+                    onCalculated(color)
+                }
+            }
+        }
+    }
+
+
 
     fun calcDominantColor(drawable: Drawable, onFinish: (Color) -> Unit) {
         val bmp = (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
@@ -91,6 +115,33 @@ class DetailViewModel @Inject constructor(
         val bmp = (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
         Palette.from(bmp).generate() { palette ->
             palette?.mutedSwatch?.rgb?.let { colorValue ->
+                onFinish(Color(colorValue))
+            }
+        }
+    }
+
+    fun calcVibrantColor(drawable: Drawable, onFinish: (Color) -> Unit) {
+        val bmp = (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
+        Palette.from(bmp).generate() { palette ->
+            palette?.vibrantSwatch?.rgb?.let { colorValue ->
+                onFinish(Color(colorValue))
+            }
+        }
+    }
+
+    fun calcLightMutedColor(drawable: Drawable, onFinish: (Color) -> Unit) {
+        val bmp = (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
+        Palette.from(bmp).generate() { palette ->
+            palette?.lightMutedSwatch?.rgb?.let { colorValue ->
+                onFinish(Color(colorValue))
+            }
+        }
+    }
+
+    fun calcDarkMutedColor(drawable: Drawable, onFinish: (Color) -> Unit) {
+        val bmp = (drawable as BitmapDrawable).bitmap.copy(Bitmap.Config.ARGB_8888, true)
+        Palette.from(bmp).generate() { palette ->
+            palette?.darkMutedSwatch?.rgb?.let { colorValue ->
                 onFinish(Color(colorValue))
             }
         }

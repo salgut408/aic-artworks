@@ -40,8 +40,11 @@ fun DetailScreen(
     detailViewModel.loadArtwork(id)
     val defaultDomColor = MaterialTheme.colorScheme.background
     var mutedColor by remember { mutableStateOf(defaultDomColor) }
-    var textColor by remember { mutableStateOf(defaultDomColor) }
-    var cardBackgroundColor by remember { mutableStateOf(defaultDomColor) }
+    var lightVibrantColor by remember { mutableStateOf(defaultDomColor) }
+    var vibrantColor by remember { mutableStateOf(defaultDomColor) }
+    var darkMutedColor by remember { mutableStateOf(defaultDomColor) }
+
+
 
 
     val uiState by detailViewModel.detailUiState.collectAsStateWithLifecycle()
@@ -50,8 +53,18 @@ fun DetailScreen(
 
     val pic = artwork.getOtherImgUrl()
     pic.let {
+
         detailViewModel.fetchMutedColors(pic, LocalContext.current) { color ->
             mutedColor = color
+        }
+        detailViewModel.fetchVibrantColors(pic, LocalContext.current) {color ->
+            vibrantColor = color
+        }
+        detailViewModel.fetchLightVibrantColors(pic, LocalContext.current) {color ->
+            lightVibrantColor = color
+        }
+        detailViewModel.fetchDarkMutedColors(pic, LocalContext.current) {color ->
+            darkMutedColor = color
         }
     }
 
@@ -75,7 +88,7 @@ fun DetailScreen(
                 Icon(
                     imageVector = Icons.Rounded.Add,
                     contentDescription = null,
-                    tint = Color.White,
+                    tint = vibrantColor,
                 )
             }
         },
@@ -106,7 +119,7 @@ fun DetailContent(
             .fillMaxSize()
 
     ) {
-
+        // the background
         SubcomposeAsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(artwork.getOtherImgUrl()).crossfade(false).build(),
@@ -132,9 +145,10 @@ fun DetailContent(
                     contentDescription = artwork.title,
                     elevation = 0.dp,
                     backgroundColor = dominantColor,
-                    borderWidth = 10.dp,
-                    borderColor = dominantColor,
-                    shape = RectangleShape,
+                    borderWidth = 8.dp,
+                    borderColor = Color.White,
+                    shape = RoundedCornerShape(8.dp),
+
                 )
 
 
@@ -148,7 +162,10 @@ fun DetailContent(
 }
 
 @Composable
-fun ArtInfoCollumn(modifier: Modifier, artwork: ArtDetails) {
+fun ArtInfoCollumn(
+    modifier: Modifier,
+    artwork: ArtDetails
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -177,7 +194,10 @@ fun ArtInfoCollumn(modifier: Modifier, artwork: ArtDetails) {
 
 
 @Composable
-fun ThemesList(list: List<String>, modifier: Modifier) {
+fun ThemesList(
+    list: List<String>,
+    modifier: Modifier
+) {
     Column(
         modifier = modifier
     ) {
