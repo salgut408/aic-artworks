@@ -40,6 +40,7 @@ fun DetailScreen(
     val defaultDomColor = MaterialTheme.colorScheme.background
     var mutedColor by remember { mutableStateOf(defaultDomColor) }
     var textColor by remember { mutableStateOf(defaultDomColor) }
+    var cardBackgroundColor by remember { mutableStateOf(defaultDomColor) }
 
 
     val uiState by detailViewModel.detailUiState.collectAsStateWithLifecycle()
@@ -48,7 +49,7 @@ fun DetailScreen(
 
     val pic = artwork.getOtherImgUrl()
     pic.let {
-        detailViewModel.fetchColors(pic, LocalContext.current) { color ->
+        detailViewModel.fetchMutedColors(pic, LocalContext.current) { color ->
             mutedColor = color
         }
     }

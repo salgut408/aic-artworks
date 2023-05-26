@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.toColor
-import androidx.core.graphics.toColorLong
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
@@ -17,7 +16,6 @@ import coil.request.SuccessResult
 import com.salvador.artapp.domain.domain_models.detail.ArtDetail
 import com.salvador.artapp.domain.repositories.ArtworkRepository
 import com.salvador.artapp.domain.use_cases.GetArtDetailUseCase
-import com.salvador.artapp.utils.printToLog
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,7 +39,7 @@ class DetailViewModel @Inject constructor(
 
     }
 
-    fun fetchColors(url: String, context: Context, onCalculated: (Color) -> Unit) {
+    fun fetchMutedColors(url: String, context: Context, onCalculated: (Color) -> Unit) {
         viewModelScope.launch {
             val req = ImageRequest.Builder(context)
                 .data(url)
@@ -84,7 +82,6 @@ class DetailViewModel @Inject constructor(
         Palette.from(bmp).generate() { palette ->
             palette?.dominantSwatch?.rgb?.let { colorValue ->
                 onFinish(Color(colorValue))
-
             }
         }
     }
