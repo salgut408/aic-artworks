@@ -77,7 +77,7 @@ fun ExhibitionsRow(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
 
-        LazyColumn(
+        LazyRow(
             contentPadding = contentPaddingValues,
 
             ) {
@@ -85,10 +85,10 @@ fun ExhibitionsRow(
                 Card(modifier
                     .fillMaxWidth()
                     ) {
-                    Text(text = exhibit.title ?: "", fontWeight = FontWeight.Bold, modifier = modifier.padding(16.dp))
+                    Text(text = exhibit.title ?: "", fontWeight = FontWeight.Bold, modifier = modifier.padding(16.dp).wrapContentWidth())
 
-                    HtmlText(html = exhibit.shortDescription ?: "", modifier = modifier.padding(16.dp))
-                    Spacer(modifier = modifier.height(8.dp))
+//                    HtmlText(html = exhibit.shortDescription ?: "", modifier = modifier.padding(16.dp))
+                    Spacer(modifier = modifier.width(8.dp))
                 }
             }
         }
