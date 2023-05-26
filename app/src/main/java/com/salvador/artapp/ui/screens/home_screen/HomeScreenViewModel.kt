@@ -8,11 +8,13 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.google.android.gms.common.internal.Asserts
 import com.salvador.artapp.data.repository_impls.paged.ArtSource
+import com.salvador.artapp.domain.domain_models.exhibit.ExhibitModel
 import com.salvador.artapp.domain.domain_models.list.ArtworkModel
 import com.salvador.artapp.domain.domain_models.list.ConfigModel
 import com.salvador.artapp.domain.domain_models.list.PaginationModel
 import com.salvador.artapp.domain.repositories.ArtworkRepository
 import com.salvador.artapp.domain.use_cases.GetArtworksUseCase
+import com.salvador.artapp.domain.use_cases.GetExhibitsUseCase
 import com.salvador.artapp.utils.Constants.Companion.FIELD_TERMS
 import com.salvador.artapp.utils.printToLog
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,9 +29,14 @@ data class Pixel(val red: Int, val green: Int, val blue: Int)
 class HomeScreenViewModel @Inject constructor(
     private val artworkRepository: ArtworkRepository,
     private val getArtworksUseCase: GetArtworksUseCase,
+    private val getExhibitsUseCase: GetExhibitsUseCase
 ) : ViewModel() {
     private val _listUiState = MutableStateFlow(ListUiState(isLoading = true))
     val listUiState: StateFlow<ListUiState> = _listUiState.asStateFlow()
+
+    private val _exhibits = MutableStateFlow(listOf<ExhibitModel>())
+    val exhibits: StateFlow<List<ExhibitModel>> = _exhibits.asStateFlow()
+
 
     val art: Flow<PagingData<ArtworkModel>> = Pager(PagingConfig(pageSize = 20)) {
         ArtSource(artworkRepository)
@@ -42,8 +49,6 @@ class HomeScreenViewModel @Inject constructor(
     var searchingArtPage = 1
 
     init {
-
-
         loadAllArtworks()
     }
 
@@ -69,6 +74,11 @@ class HomeScreenViewModel @Inject constructor(
                     currentPage = pagination.currentPage,
                     totalPages = pagination.totalPages
                 )
+
+                val exhibits = getExhibitsUseCase(1)
+                _exhibits.emit(exhibits)
+                _exhibits.value.printToLog()
+
 
             }
         }

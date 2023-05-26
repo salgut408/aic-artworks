@@ -6,9 +6,12 @@ import com.salvador.artapp.data.db.ArtworkDao
 import com.salvador.artapp.data.db.ArtworksDatabase
 import com.salvador.artapp.data.remote.api.ArtApi
 import com.salvador.artapp.data.repository_impls.ArtworkRepositoryImpl
+import com.salvador.artapp.data.repository_impls.ExhibitRepositoryImpl
 import com.salvador.artapp.domain.repositories.ArtworkRepository
+import com.salvador.artapp.domain.repositories.ExhibitRepository
 import com.salvador.artapp.domain.use_cases.GetArtDetailUseCase
 import com.salvador.artapp.domain.use_cases.GetArtworksUseCase
+import com.salvador.artapp.domain.use_cases.GetExhibitsUseCase
 import com.salvador.artapp.utils.Constants.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -35,6 +38,10 @@ object AppModule {
         artworkRepository: ArtworkRepository
     ): GetArtDetailUseCase = GetArtDetailUseCase(artworkRepository)
 
+    @Provides
+    fun provideExhibitionsUseCase(
+        exhibitRepository: ExhibitRepository,
+    ): GetExhibitsUseCase = GetExhibitsUseCase(exhibitRepository)
 
     @Provides
     fun provideArtworkDao(artworksDatabase: ArtworksDatabase): ArtworkDao = artworksDatabase.getArtworkDao()
@@ -54,6 +61,12 @@ object AppModule {
         artApi: ArtApi,
         artworksDatabase: ArtworksDatabase,
     ): ArtworkRepository = ArtworkRepositoryImpl(artApi, artworksDatabase)
+
+    @Provides
+    fun provideExhibitRepository(
+        artApi: ArtApi,
+        artworksDatabase: ArtworksDatabase,
+    ) : ExhibitRepository = ExhibitRepositoryImpl(artApi, artworksDatabase)
 
     @Singleton
     @Provides

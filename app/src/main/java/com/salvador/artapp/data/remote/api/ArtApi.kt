@@ -1,6 +1,7 @@
 package com.salvador.artapp.data.remote.api
 
 import com.salvador.artapp.data.remote.network_responses.detail.NetworkDetail
+import com.salvador.artapp.data.remote.network_responses.exhibitions.ExhibitionsNetworkResponse
 import com.salvador.artapp.data.remote.network_responses.list.NetworkResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -15,7 +16,6 @@ interface ArtApi {
         fieldTerms: String,
         @Query("page")
         pageNumber: Int
-
     ): Response<NetworkResponse>
 
     @GET("artworks/search")
@@ -24,7 +24,6 @@ interface ArtApi {
         fieldTerms: String,
         @Query("page")
         pageNumber: Int
-
     ): Result<NetworkResponse>
 
     @GET("artworks/{id}")
@@ -41,7 +40,6 @@ interface ArtApi {
         searchTerm: String,
         @Query("page")
         pageNumber: Int = 1
-
     ): Response<NetworkResponse>
 
     @GET("artworks/search")
@@ -52,10 +50,16 @@ interface ArtApi {
         searchTerm: String,
         @Query("page")
         pageNumber: Int = 1
-
     ): Response<NetworkResponse>
 
 
+    @GET("exhibitions")
+    suspend fun getExhibitions(
+        @Query("page")
+        pageNumber: Int
+    ): Response<ExhibitionsNetworkResponse>
 
-//    /artworks/{id}
+//    https://api.artic.edu/api/v1/exhibitions
+//    ExhibitionsNetworkResponse
+// //    /artworks/{id}
 }

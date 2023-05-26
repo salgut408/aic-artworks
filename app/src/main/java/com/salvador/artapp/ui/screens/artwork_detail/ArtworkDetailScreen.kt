@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -123,7 +124,10 @@ fun DetailContent(
         SubcomposeAsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(artwork.getOtherImgUrl()).crossfade(false).build(),
-            modifier = Modifier.fillMaxSize().blur(8.dp).alpha(0.9f),
+            modifier = Modifier
+                .fillMaxSize()
+                .blur(8.dp)
+                .alpha(0.9f),
             contentScale = ContentScale.Crop,
             contentDescription = artwork.title
         )
@@ -150,6 +154,8 @@ fun DetailContent(
                     shape = RoundedCornerShape(8.dp),
 
                 )
+            
+
 
 
 
@@ -189,6 +195,12 @@ fun ArtInfoCollumn(
             style = MaterialTheme.typography.bodyMedium)
         Spacer(modifier = modifier.height(8.dp))
         ThemesList(list = artwork.themeTitles, modifier = modifier)
+
+        if (artwork.isOnView == true) {
+            Text(text = "ON VIEW")
+        } else {
+            Text(text = "Not on view")
+        }
     }
 }
 

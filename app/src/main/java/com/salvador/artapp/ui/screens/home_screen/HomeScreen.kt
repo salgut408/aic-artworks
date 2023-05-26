@@ -3,10 +3,7 @@ package com.salvador.artapp.ui.screens.home_screen
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.BottomNavigation
@@ -28,11 +25,9 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import com.salvador.artapp.domain.domain_models.exhibit.ExhibitModel
 import com.salvador.artapp.domain.domain_models.list.ArtworkModel
-import com.salvador.artapp.ui.common_comps.ArtScaffold
-import com.salvador.artapp.ui.common_comps.ArtSurface
-import com.salvador.artapp.ui.common_comps.BasicImage
-import com.salvador.artapp.ui.common_comps.DefaultCard
+import com.salvador.artapp.ui.common_comps.*
 import com.salvador.artapp.ui.navigation.NavigationScreens
 import kotlinx.coroutines.flow.Flow
 
@@ -47,20 +42,25 @@ fun HomeScreen(
     val artworks = uiState.currentList
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val screens = listOf(NavigationScreens.HomeScreen, NavigationScreens.SearchScreen)
+    val exhibits = homeScreenViewModel.exhibits.collectAsStateWithLifecycle()
+    val ex = exhibits.value
 
     ArtScaffold(
         topBar = {
-        HomeToolbar(
-            title = "ART",
-            scrollBehavior = scrollBehavior
-        ) },
+            HomeToolbar(
+                title = "ART",
+                scrollBehavior = scrollBehavior
+            )
+        },
         content = { padding ->
-            Column(modifier = Modifier.fillMaxWidth()) {
+            Column(modifier = Modifier.fillMaxWidth(),) {
+                ExhibitionsRow(list = ex, contentPaddingValues = padding, modifier = Modifier)
+
                 if (artworks.isNotEmpty()) {
                     ArtworkList(
                         artworks = homeScreenViewModel.art,
                         contentPaddingValues = padding,
-                        onArtworkClick = {  },
+                        onArtworkClick = { },
                         navController = navController
                     )
                 }
@@ -69,13 +69,40 @@ fun HomeScreen(
     )
 }
 
+@Composable
+fun ExhibitionsRow(
+    list: List<ExhibitModel>,
+    contentPaddingValues: PaddingValues,
+    modifier: Modifier
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
+
+        LazyColumn(
+            contentPadding = contentPaddingValues,
+
+            ) {
+            items(list) { exhibit ->
+                Card(modifier
+                    .fillMaxWidth()
+                    ) {
+                    Text(text = exhibit.title ?: "", fontWeight = FontWeight.Bold, modifier = modifier.padding(16.dp))
+
+                    HtmlText(html = exhibit.shortDescription ?: "", modifier = modifier.padding(16.dp))
+                    Spacer(modifier = modifier.height(8.dp))
+                }
+            }
+        }
+    }
+}
+
+
 //TODO Fix scrolling to top after config change
 @Composable
 fun ArtworkList(
     artworks: Flow<PagingData<ArtworkModel>>,
     contentPaddingValues: PaddingValues,
     onArtworkClick: (String) -> Unit,
-    navController: NavController
+    navController: NavController,
 ) {
     val lazyArtItems = artworks.collectAsLazyPagingItems()
     val scrollState = rememberLazyListState()
@@ -85,13 +112,13 @@ fun ArtworkList(
     }
 
 
-    LazyColumn (
+    LazyColumn(
         contentPadding = contentPaddingValues,
         state = scrollState
     ) {
         items(lazyArtItems) { art ->
             ArtworkCard(
-                artwork =art!! ,
+                artwork = art!!,
                 onArtworkClick = { },
                 modifier = Modifier,
                 navController = navController
@@ -100,7 +127,7 @@ fun ArtworkList(
         lazyArtItems.apply {
             when {
                 loadState.refresh is LoadState.Loading -> {
-                    item { LoadingView(modifier = Modifier.fillParentMaxSize())}
+                    item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
                 }
                 loadState.append is LoadState.Loading -> {
                     item { LoadingItem() }
@@ -137,7 +164,7 @@ fun ArtworkCard(
     artwork: ArtworkModel,
     onArtworkClick: (String) -> Unit,
     modifier: Modifier,
-    navController: NavController
+    navController: NavController,
 
     ) {
     DefaultCard(
@@ -145,7 +172,7 @@ fun ArtworkCard(
         content = {
             ArtworkItem(
                 artwork = artwork,
-                onArtworkClick = {onArtworkClick(artwork.id.toString()) },
+                onArtworkClick = { onArtworkClick(artwork.id.toString()) },
                 modifier = modifier,
                 navController = navController
             )
@@ -160,7 +187,7 @@ fun ArtworkItem(
     artwork: ArtworkModel,
     onArtworkClick: () -> Unit,
     modifier: Modifier,
-    navController: NavController
+    navController: NavController,
 ) {
     ArtSurface(
         shape = MaterialTheme.shapes.medium,
@@ -184,8 +211,10 @@ fun ArtworkItem(
             ) {
 
 
-
-                Text(text = artwork.title, style = MaterialTheme.typography.displaySmall, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                Text(text = artwork.title,
+                    style = MaterialTheme.typography.displaySmall,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis)
                 BasicImage(
                     modifier = modifier,
                     imgUrl = artwork.getOtherImgUrl(),
@@ -201,7 +230,9 @@ fun ArtworkItem(
                     horizontalAlignment = Alignment.Start,
                     modifier = modifier.fillMaxWidth()
                 ) {
-                    Text(text = artwork.artistDisplay, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+                    Text(text = artwork.artistDisplay,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold)
                 }
             }
         }
@@ -227,7 +258,7 @@ fun HomeToolbar(
 
 @Composable
 fun LoadingView(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
@@ -252,7 +283,7 @@ fun LoadingItem() {
 fun ErrorItem(
     message: String,
     modifier: Modifier = Modifier,
-    onClickRetry: () -> Unit
+    onClickRetry: () -> Unit,
 ) {
     Row(
         modifier = modifier.padding(16.dp),
@@ -276,15 +307,15 @@ fun ErrorItem(
 fun SearchBar(
     modifier: Modifier = Modifier,
     hint: String = "",
-    onSearch: (String) -> Unit = {}
+    onSearch: (String) -> Unit = {},
 
-) {
-    var text by remember { mutableStateOf( "") }
+    ) {
+    var text by remember { mutableStateOf("") }
     var isHintDisplayed by remember { mutableStateOf(hint != "") }
 
     Box(modifier = Modifier.fillMaxWidth()) {
         BasicTextField(
-            value = text ,
+            value = text,
             onValueChange = {
                 text = it
                 onSearch(it)
@@ -298,7 +329,7 @@ fun SearchBar(
                 .background(Color.White, CircleShape)
                 .padding(8.dp)
         )
-        if(isHintDisplayed){
+        if (isHintDisplayed) {
             Text(
                 text = hint,
                 color = Color.LightGray,
@@ -311,7 +342,7 @@ fun SearchBar(
 @Composable
 fun BottomNavigationBar(
     navController: NavController,
-    items: List<NavigationScreens>
+    items: List<NavigationScreens>,
 ) {
     BottomNavigation() {
 //        val currentRoute = cu
@@ -323,7 +354,7 @@ fun BottomNavigationBar(
 fun SearchBar2(
     modifier: Modifier = Modifier,
     hint: String = "",
-    onSearch: (String) -> Unit = {}
+    onSearch: (String) -> Unit = {},
 ) {
     var text by remember { mutableStateOf("") }
     var isHintDisplayed by remember { mutableStateOf(hint != "") }

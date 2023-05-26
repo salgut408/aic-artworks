@@ -12,4 +12,5 @@ interface ArtworkRepository {
     suspend fun getFullResponse(fieldTerms: String, pageNumber: Int): ArtResponseModel
 
 
+
 }
