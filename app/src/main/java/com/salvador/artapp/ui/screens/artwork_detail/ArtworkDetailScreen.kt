@@ -1,27 +1,27 @@
 package com.salvador.artapp.ui.screens.artwork_detail
 
-import android.graphics.ColorSpace.Rgb
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
-import com.salvador.artapp.domain.domain_models.detail.ArtDetail
+import coil.compose.SubcomposeAsyncImage
+import coil.request.ImageRequest
 import com.salvador.artapp.domain.domain_models.detail.ArtDetails
 import com.salvador.artapp.ui.common_comps.ArtScaffold
 import com.salvador.artapp.ui.common_comps.BasicImage
@@ -38,7 +38,7 @@ fun DetailScreen(
 
     detailViewModel.loadArtwork(id)
     val defaultDomColor = MaterialTheme.colorScheme.background
-    var dominantColor by remember { mutableStateOf(defaultDomColor) }
+    var mutedColor by remember { mutableStateOf(defaultDomColor) }
     var textColor by remember { mutableStateOf(defaultDomColor) }
 
 
@@ -49,7 +49,7 @@ fun DetailScreen(
     val pic = artwork.getOtherImgUrl()
     pic.let {
         detailViewModel.fetchColors(pic, LocalContext.current) { color ->
-            dominantColor = color
+            mutedColor = color
         }
     }
 
@@ -57,7 +57,7 @@ fun DetailScreen(
         topBar = {
             DetailToolbar(
                 title = artwork.title ?: "",
-                modifier = modifier.background(dominantColor),
+                modifier = modifier.background(mutedColor),
                 scrollBehavior = scrollBehavior,
             )
         },
@@ -66,12 +66,12 @@ fun DetailScreen(
                 onClick = {
                     //OnClick Method
                 },
-                containerColor = dominantColor,
+                containerColor = mutedColor,
                 shape = RoundedCornerShape(16.dp),
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Add,
-                    contentDescription = "Add FAB",
+                    contentDescription = null,
                     tint = Color.White,
                 )
             }
@@ -81,7 +81,7 @@ fun DetailScreen(
             DetailContent(
                 artwork = artwork,
                 modifier = modifier,
-                dominantColor = dominantColor,
+                dominantColor = mutedColor,
                 contenPaddingValues = paddingValues
             )
         }
@@ -97,41 +97,50 @@ fun DetailContent(
     dominantColor: Color,
     contenPaddingValues: PaddingValues,
 ) {
-    Column(
-        modifier = modifier
-            .background(
-                Color.White
-            )
-            .padding(16.dp)
+
+    Box(
+        modifier = Modifier
             .fillMaxSize()
-            .padding(contenPaddingValues),
-        horizontalAlignment = Alignment.CenterHorizontally,
 
-        ) {
-        Box(
+    ) {
+
+        SubcomposeAsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(artwork.getOtherImgUrl()).crossfade(false).build(),
+            modifier = Modifier.fillMaxSize().blur(8.dp).alpha(0.9f),
+            contentScale = ContentScale.Crop,
+            contentDescription = artwork.title
+        )
+
+
+        Column(
             modifier = modifier
-                .fillMaxWidth()
-                .background(dominantColor)
-        ) {
-            BasicImage(
-                modifier = modifier
-                    .size(300.dp)
-                    .fillMaxWidth(),
-                imgUrl = artwork.getOtherImgUrl(),
-                contentDescription = artwork.title,
-                elevation = 0.dp,
-                backgroundColor = Color.White,
-                borderWidth = 10.dp,
-                borderColor = Color.White,
-                shape = RectangleShape,
-            )
+                .padding(16.dp)
+//                .fillMaxSize()
+                .padding(contenPaddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally,
+
+            ) {
+                BasicImage(
+                    modifier = modifier
+                        .size(300.dp)
+                        .fillMaxWidth(),
+                    imgUrl = artwork.getOtherImgUrl(),
+                    contentDescription = artwork.title,
+                    elevation = 0.dp,
+                    backgroundColor = dominantColor,
+                    borderWidth = 10.dp,
+                    borderColor = dominantColor,
+                    shape = RectangleShape,
+                )
+
+
+
+
+            ArtInfoCollumn(modifier = modifier, artwork = artwork)
+
+
         }
-
-
-
-        ArtInfoCollumn(modifier = modifier, artwork = artwork)
-
-
     }
 }
 
