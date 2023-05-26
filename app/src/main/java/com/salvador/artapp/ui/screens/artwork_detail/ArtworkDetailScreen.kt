@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.salvador.artapp.domain.domain_models.detail.ArtDetails
 import com.salvador.artapp.ui.common_comps.ArtScaffold
 import com.salvador.artapp.ui.common_comps.BasicImage
@@ -53,6 +54,7 @@ fun DetailScreen(
             mutedColor = color
         }
     }
+
 
     ArtScaffold(
         topBar = {
