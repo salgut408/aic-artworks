@@ -1,10 +1,6 @@
 package com.salvador.artapp.domain.domain_models.random_image
 
-import com.google.gson.annotations.SerializedName
-import com.salvador.artapp.data.remote.network_responses.random_images.Ahash
 import com.salvador.artapp.data.remote.network_responses.random_images.Color
-import com.salvador.artapp.data.remote.network_responses.random_images.Fingerprint
-import com.salvador.artapp.data.remote.network_responses.random_images.Phash
 
 data class RandomImageModel(
     val color: Color? = Color(),

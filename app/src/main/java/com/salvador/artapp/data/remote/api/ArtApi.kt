@@ -3,6 +3,7 @@ package com.salvador.artapp.data.remote.api
 import com.salvador.artapp.data.remote.network_responses.detail.NetworkDetail
 import com.salvador.artapp.data.remote.network_responses.exhibitions.ExhibitionsNetworkResponse
 import com.salvador.artapp.data.remote.network_responses.list.NetworkResponse
+import com.salvador.artapp.data.remote.network_responses.random_images.RandomImagesNetworkResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -58,6 +59,12 @@ interface ArtApi {
         @Query("page")
         pageNumber: Int
     ): Response<ExhibitionsNetworkResponse>
+
+    @GET("images")
+    suspend fun getRandomImages (
+    @Query("page")
+    pageNumber: Int
+    ): Response<RandomImagesNetworkResponse>
 
 
 //    https://api.artic.edu/api/v1/images?limit=2

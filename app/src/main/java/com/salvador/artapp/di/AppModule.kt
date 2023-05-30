@@ -12,6 +12,7 @@ import com.salvador.artapp.domain.repositories.ExhibitRepository
 import com.salvador.artapp.domain.use_cases.GetArtDetailUseCase
 import com.salvador.artapp.domain.use_cases.GetArtworksUseCase
 import com.salvador.artapp.domain.use_cases.GetExhibitsUseCase
+import com.salvador.artapp.domain.use_cases.GetRandomArtUseCase
 import com.salvador.artapp.utils.Constants.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -21,7 +22,6 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -42,6 +42,11 @@ object AppModule {
     fun provideExhibitionsUseCase(
         exhibitRepository: ExhibitRepository,
     ): GetExhibitsUseCase = GetExhibitsUseCase(exhibitRepository)
+
+    @Provides
+    fun provideRandomArtUseCase(
+        artworkRepository: ArtworkRepository
+    ): GetRandomArtUseCase = GetRandomArtUseCase(artworkRepository)
 
     @Provides
     fun provideArtworkDao(artworksDatabase: ArtworksDatabase): ArtworkDao = artworksDatabase.getArtworkDao()
