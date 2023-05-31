@@ -9,10 +9,7 @@ import com.salvador.artapp.data.repository_impls.ArtworkRepositoryImpl
 import com.salvador.artapp.data.repository_impls.ExhibitRepositoryImpl
 import com.salvador.artapp.domain.repositories.ArtworkRepository
 import com.salvador.artapp.domain.repositories.ExhibitRepository
-import com.salvador.artapp.domain.use_cases.GetArtDetailUseCase
-import com.salvador.artapp.domain.use_cases.GetArtworksUseCase
-import com.salvador.artapp.domain.use_cases.GetExhibitsUseCase
-import com.salvador.artapp.domain.use_cases.GetRandomArtUseCase
+import com.salvador.artapp.domain.use_cases.*
 import com.salvador.artapp.utils.Constants.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -32,6 +29,11 @@ object AppModule {
     fun provideArtworksListUseCase(
         artworkRepository: ArtworkRepository
     ): GetArtworksUseCase = GetArtworksUseCase(artworkRepository)
+
+    @Provides
+    fun provideSearchArtUseCase(
+        artworkRepository: ArtworkRepository
+    ): SearchArtUseCase = SearchArtUseCase(artworkRepository)
 
     @Provides
     fun provideArtDetailUseCase(

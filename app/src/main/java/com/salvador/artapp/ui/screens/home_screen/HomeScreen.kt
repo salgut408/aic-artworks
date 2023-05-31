@@ -9,6 +9,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.BottomNavigation
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -45,7 +47,6 @@ fun HomeScreen(
     val uiState by homeScreenViewModel.listUiState.collectAsStateWithLifecycle()
     val artworks = uiState.currentList
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val screens = listOf(NavigationScreens.HomeScreen, NavigationScreens.SearchScreen)
     val exhibits = homeScreenViewModel.exhibits.collectAsStateWithLifecycle()
     val ex = exhibits.value
 
@@ -57,7 +58,7 @@ fun HomeScreen(
             )
         },
         content = { padding ->
-            Column(modifier = Modifier.fillMaxWidth(),) {
+            Column(modifier = Modifier.fillMaxWidth()) {
 
 //                SimpleFlowRow(list = ex)
 
@@ -75,6 +76,7 @@ fun HomeScreen(
         }
     )
 }
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun SimpleFlowRow(list: List<ExhibitModel>) {
@@ -83,7 +85,6 @@ fun SimpleFlowRow(list: List<ExhibitModel>) {
             .fillMaxWidth(1f)
             .wrapContentHeight(align = Alignment.Top),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
-//        verticalArrangement = Arrangement.spacedBy(20.dp),
         maxItemsInEachRow = 5
     ) {
         list.map {
@@ -94,7 +95,9 @@ fun SimpleFlowRow(list: List<ExhibitModel>) {
                     .height(90.dp)
                     .background(Color.Green)
             ) {
-                Text(text = it.title .toString(), fontSize = 18.sp, modifier = Modifier.padding(3.dp))
+                Text(text = it.title.toString(),
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(3.dp))
                 BasicImage(imgUrl = it.imageUrl ?: "",
                     contentDescription = "",
                     elevation = 0.dp,
@@ -103,53 +106,53 @@ fun SimpleFlowRow(list: List<ExhibitModel>) {
                     borderColor = Color.Transparent)
             }
         }
-
-        }
-
+    }
 }
 
 @Composable
 fun ExhibitionsRow(
     list: List<ExhibitModel>,
     contentPaddingValues: PaddingValues,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
 //    Column(modifier = modifier.fillMaxWidth()) {
 
-        LazyRow(
-            contentPadding = contentPaddingValues,
-            ) {
-            items(list) { exhibit ->
-                Card(modifier
+    LazyRow(
+        contentPadding = contentPaddingValues,
+    ) {
+        items(list) { exhibit ->
+            Card(modifier
 //                    .fillMaxWidth()
-                    ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
 //                        horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = modifier.padding(16.dp)
-                    ) {
+                ) {
 
-                        Text(text = exhibit.title ?: "", fontWeight = FontWeight.Bold, modifier = modifier.width(180.dp))
+                    Text(text = exhibit.title ?: "",
+                        fontWeight = FontWeight.Bold,
+                        modifier = modifier.width(180.dp))
 
-                        BasicImage(
-                            imgUrl = exhibit.imageUrl ?: "0",
-                            contentDescription = "",
-                            elevation = 0.dp,
-                            backgroundColor = Color.Transparent,
-                            borderWidth = 0.dp,
-                            borderColor = Color.Transparent,
-                            shape = RoundedCornerShape(8.dp),
+                    BasicImage(
+                        imgUrl = exhibit.imageUrl ?: "0",
+                        contentDescription = "",
+                        elevation = 0.dp,
+                        backgroundColor = Color.Transparent,
+                        borderWidth = 0.dp,
+                        borderColor = Color.Transparent,
+                        shape = RoundedCornerShape(8.dp),
                         modifier = modifier
                             .wrapContentSize()
                             .size(100.dp)
-                        )
-                    }
+                    )
+                }
 
 //                    HtmlText(html = exhibit.shortDescription ?: "", modifier = modifier.padding(start = 16.dp))
-                }
-                Spacer(modifier = modifier.width(8.dp))
             }
+            Spacer(modifier = modifier.width(8.dp))
         }
+    }
 
 }
 
@@ -308,7 +311,9 @@ fun HomeToolbar(
     CenterAlignedTopAppBar(
         title = { Text(text = title, fontWeight = FontWeight.Bold) },
         navigationIcon = {
-
+            Icon(Icons.Default.Search,
+                contentDescription = null,
+                modifier.clickable { })
         },
         scrollBehavior = scrollBehavior,
     )
@@ -415,7 +420,7 @@ fun SearchBar2(
     onSearch: (String) -> Unit = {},
 ) {
     var text by remember { mutableStateOf("") }
-    var isHintDisplayed by remember { mutableStateOf(hint != "") }
+    var isHintDisplayed by remember { mutableStateOf(hint != "Search...") }
     Box(modifier = modifier) {
         BasicTextField(value = text,
             onValueChange = {

@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.google.android.gms.common.internal.Asserts
 import com.salvador.artapp.data.repository_impls.paged.ArtSource
 import com.salvador.artapp.domain.domain_models.exhibit.ExhibitModel
 import com.salvador.artapp.domain.domain_models.list.ArtworkModel
@@ -24,7 +23,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class Pixel(val red: Int, val green: Int, val blue: Int)
 
 
 @HiltViewModel
@@ -51,7 +49,6 @@ class HomeScreenViewModel @Inject constructor(
 
 
     var artPage = 1
-    var searchingArtPage = 1
 
     init {
         loadAllArtworks()
@@ -66,13 +63,13 @@ class HomeScreenViewModel @Inject constructor(
 
         try {
             val response = getArtworksUseCase(FIELD_TERMS, artPage)
-            val artwork = response.artWorks
+            val artworks = response.artWorks
             val config = response.config
             val pagination = response.pagination
-            if (artwork.isNotEmpty()) {
-                addAllToDb(artwork)
+            if (artworks.isNotEmpty()) {
+                addAllToDb(artworks)
                 setListUiState(
-                    artworks = _listUiState.value.currentList + artwork,
+                    artworks = _listUiState.value.currentList + artworks,
                     isLoading = false,
                     pagination = pagination,
                     config = config,
@@ -85,7 +82,6 @@ class HomeScreenViewModel @Inject constructor(
 
                 val randomArt = getRandomArtUseCase(1)
                 _randomArt.emit(randomArt)
-                _randomArt.value.printToLog("RANDOM ART")
 
             }
         }
