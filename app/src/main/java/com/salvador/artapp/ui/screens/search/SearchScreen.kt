@@ -43,15 +43,15 @@ fun SearchScreen(
 
             }
             if (artworks.isNotEmpty()) {
-//                ArtworkList(
-//                    artworks = searchViewModel.searchUiState.value.currentList,
-//                    contentPaddingValues = padding ,
-//                    onArtworkClick = {},
-//                    navController = navController
-//                )
-                searchViewModel.searchUiState.value.currentList.map { art->
-                    ArtworkCard(artwork = art, onArtworkClick = {}, modifier = Modifier, navController = navController)
-                }
+                ArtworkList(
+                    artworks = searchViewModel.art,
+                    contentPaddingValues = padding ,
+                    onArtworkClick = {},
+                    navController = navController
+                )
+//                searchViewModel.searchUiState.value.currentList.map { art->
+//                    ArtworkCard(artwork = art, onArtworkClick = {}, modifier = Modifier, navController = navController)
+//                }
 
             }
 

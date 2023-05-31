@@ -30,17 +30,18 @@ class SearchViewModel @Inject constructor(
     private val _searchUiState = MutableStateFlow(SearchUiState())
     val searchUiState: StateFlow<SearchUiState> = _searchUiState
 
-    val searchQuery: String = ""
+    val searchQuery: String = "cats"
 
-//    val art: Flow<PagingData<ArtworkModel>> = Pager(PagingConfig(pageSize = 20)) {
-//        SearchSource(artworkRepository, searchQuery)
-//    }.flow
+    val art: Flow<PagingData<ArtworkModel>> = Pager(PagingConfig(pageSize = 20)) {
+        SearchSource(artworkRepository, searchQuery)
+    }.flow
 
     var searchPage = 1
 
     init {
 
         searchArtworks("cats")
+        art.printToLog("CATS_?")
 
     }
 
