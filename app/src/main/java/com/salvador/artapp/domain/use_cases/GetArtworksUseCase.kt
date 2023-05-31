@@ -15,6 +15,7 @@ class GetArtworksUseCase @Inject constructor(
     suspend operator fun invoke(fieldTerms: String, pageNumber: Int): ArtResponseModel =
         withContext(defaultDispatcher){
             val art = artworkRepository.getFullResponse(fieldTerms, pageNumber)
+            artworkRepository.saveAllArt(art.artWorks)
             return@withContext art
         }
 }

@@ -14,6 +14,7 @@ class GetRandomArtUseCase @Inject constructor(
     suspend operator fun invoke(pageNumber: Int): List<RandomImageModel> =
         withContext(defaultDispatcher) {
             val artList = artworkRepository.getRandomImages(pageNumber)
+
             return@withContext artList
         }
 

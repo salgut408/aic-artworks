@@ -17,6 +17,5 @@ class ExhibitRepositoryImpl(
             return response.body()?.exhibits?.map { it.asDomain() }!!
         }
         return response.body()?.exhibits?.map { it.asDomain() }!!
-
     }
 }

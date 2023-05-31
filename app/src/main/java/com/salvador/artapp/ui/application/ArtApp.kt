@@ -30,9 +30,8 @@ fun ArtApp(
     modifier: Modifier = Modifier,
 ) {
     val appState = rememberAppState()
-//    val backStackEntry by appState.navController.currentBackStackEntryAsState()
 
-    val navItems = listOf(NavigationScreens.HomeScreen, NavigationScreens.SearchScreen)
+    val navItems = listOf(NavigationScreens.HomeScreen, NavigationScreens.SearchScreen, NavigationScreens.FavoritesScreen)
 
     Scaffold(
         bottomBar = {
@@ -42,9 +41,10 @@ fun ArtApp(
                 navItems.forEach{ screen ->
                     currentDestination?.hierarchy?.any {it.route == screen.route}?.let {
                         BottomNavigationItem(
-                            icon = {Icon(Icons.Default.Search, contentDescription = null)},
-                            label = { Text(text = it.toString())},
+                            icon = {Icon(screen.icon, contentDescription = null)},
+                            label = { Text(text = screen.name)},
                             selected = it,
+                            alwaysShowLabel = false,
                             onClick = {
                                 appState.navController.navigate(screen.route) {
                                     popUpTo(appState.navController.graph.findStartDestination().id) {

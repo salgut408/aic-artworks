@@ -36,7 +36,7 @@ fun SearchScreen(
 
 
     ArtScaffold(
-        topBar = { SearchBar3() },
+        topBar = { SearchBar3( onSearch = {}) },
         content = { padding ->
             Column(modifier = Modifier.fillMaxWidth()) {
                 SearchBar3()

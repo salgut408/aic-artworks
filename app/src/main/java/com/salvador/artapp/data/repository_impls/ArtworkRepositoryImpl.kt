@@ -20,18 +20,12 @@ class ArtworkRepositoryImpl(
     val artworksDatabase: ArtworksDatabase
 ): ArtworkRepository {
 
-
     override suspend fun searchForArtworks(
         fieldTerms: String,
         searchQuery: String,
         pageNumber: Int,
     ): ArtResponseModel =
          artApi.searchForArt(fieldTerms, searchQuery, pageNumber).body()?.asDomain()!!
-
-
-
-
-
 
     override suspend fun saveAllArt(art: List<ArtworkModel>) {
         artworksDatabase.getArtworkDao().insertArtworksList(art.map { it.asArtworkDbEntity() })
@@ -56,8 +50,5 @@ class ArtworkRepositoryImpl(
             return response.body()?.randomImages?.map { it?.asDomain()!! } !!
         }
         return response.body()?.randomImages?.map { it?.asDomain()!! } !!
-
     }
-
-
 }

@@ -30,23 +30,23 @@ class SearchViewModel @Inject constructor(
     private val _searchUiState = MutableStateFlow(SearchUiState())
     val searchUiState: StateFlow<SearchUiState> = _searchUiState
 
-    val searchQuery: String = "cats"
+    val searchQuery: String = "chicago"
 
     val art: Flow<PagingData<ArtworkModel>> = Pager(PagingConfig(pageSize = 20)) {
-        SearchSource(artworkRepository, searchQuery)
+        SearchSource(searchArtUseCase, searchQuery)
     }.flow
 
     var searchPage = 1
 
     init {
 
-        searchArtworks("cats")
-        art.printToLog("CATS_?")
+        searchArtworks(searchQuery)
+//        art.printToLog("CATS_?")
 
     }
 
 
-    private fun searchArtworks(searchQuery: String) = viewModelScope.launch {
+     fun searchArtworks(searchQuery: String) = viewModelScope.launch {
         try {
             val response = searchArtUseCase(FIELD_TERMS, searchPage, searchQuery)
             val artworks = response.artWorks
@@ -62,7 +62,6 @@ class SearchViewModel @Inject constructor(
                     totalPages = pagination.totalPages
                 )
             }
-            _searchUiState.value.printToLog("CATS_SEARCH")
         }
         catch (e: Exception) {
             Log.e("VM_LOAD_ERROR", e.stackTraceToString())

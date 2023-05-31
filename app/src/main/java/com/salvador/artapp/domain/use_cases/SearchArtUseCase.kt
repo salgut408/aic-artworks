@@ -10,10 +10,12 @@ import javax.inject.Inject
 class SearchArtUseCase @Inject constructor(
     private val artworkRepository: ArtworkRepository,
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.IO,
+
 ) {
     suspend operator fun invoke(fieldTerms: String, pageNumber: Int, searchQuery: String): ArtResponseModel =
         withContext(defaultDispatcher) {
             val art = artworkRepository.searchForArtworks(fieldTerms, searchQuery, pageNumber, )
+            artworkRepository.saveAllArt(art.artWorks)
             return@withContext art
         }
 }

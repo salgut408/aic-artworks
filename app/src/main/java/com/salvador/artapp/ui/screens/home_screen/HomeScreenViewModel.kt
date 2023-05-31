@@ -42,7 +42,7 @@ class HomeScreenViewModel @Inject constructor(
     val randomArt: StateFlow<List<RandomImageModel>> = _randomArt
 
     val art: Flow<PagingData<ArtworkModel>> = Pager(PagingConfig(pageSize = 20)) {
-        ArtSource(artworkRepository)
+        ArtSource(getArtworksUseCase)
     }.flow
 
 
