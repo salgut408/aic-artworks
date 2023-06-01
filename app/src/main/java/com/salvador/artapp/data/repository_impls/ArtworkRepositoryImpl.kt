@@ -47,7 +47,7 @@ class ArtworkRepositoryImpl(
     override suspend fun getRandomImages(pageNumber: Int): List<RandomImageModel> {
         val response = artApi.getRandomImages(pageNumber)
         if (response.isSuccessful){
-            return response.body()?.randomImages?.map { it?.asDomain()!! } !!
+            return response.body()?.randomImages!!.map { it?.asDomain()!! }
         }
         return response.body()?.randomImages?.map { it?.asDomain()!! } !!
     }

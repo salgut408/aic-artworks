@@ -2,6 +2,7 @@ package com.salvador.artapp.data.remote.network_responses.random_images
 
 
 import com.google.gson.annotations.SerializedName
+import com.salvador.artapp.domain.domain_models.list.ArtworkModel
 import com.salvador.artapp.domain.domain_models.random_image.RandomImageModel
 
 data class RandomImage(
@@ -40,6 +41,8 @@ data class RandomImage(
     @SerializedName("width")
     val width: Int? = 0
 )
+
+
 
 fun RandomImage.asDomain(): RandomImageModel {
     return RandomImageModel(

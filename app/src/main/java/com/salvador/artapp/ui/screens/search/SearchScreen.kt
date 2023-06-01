@@ -7,11 +7,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -22,6 +24,7 @@ import com.salvador.artapp.ui.screens.home_screen.ArtworkCard
 import com.salvador.artapp.ui.screens.home_screen.ArtworkList
 import com.salvador.artapp.ui.screens.home_screen.SearchBar
 import com.salvador.artapp.ui.screens.home_screen.SearchBar2
+import com.salvador.artapp.utils.printToLog
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,10 +39,16 @@ fun SearchScreen(
 
 
     ArtScaffold(
-        topBar = { SearchBar3( onSearch = {}) },
+        topBar = {
+            SearchBar3( onSearch = {})
+//            TextFieldDemo()
+
+
+
+        },
         content = { padding ->
             Column(modifier = Modifier.fillMaxWidth()) {
-                SearchBar3()
+
 
             }
             if (artworks.isNotEmpty()) {
@@ -61,7 +70,17 @@ fun SearchScreen(
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TextFieldDemo() {
+    Column(Modifier.padding(16.dp)) {
+        val txtState = remember { mutableStateOf(TextFieldValue()) }
+        TextField(value = txtState.value, onValueChange = { txtState.value = it })
+        Text("The textfield has this text: " + txtState.value.text)
 
+    }
+
+}
 
 @Composable
 fun SearchBar3(
@@ -70,7 +89,7 @@ fun SearchBar3(
     onSearch: (String) -> Unit = {},
 
     ) {
-    var text by remember { mutableStateOf("") }
+    var text by remember { mutableStateOf(TextFieldValue()) }
     var isHintDisplayed by remember { mutableStateOf(hint != "") }
 
     Box(modifier = Modifier.fillMaxWidth()) {
@@ -78,11 +97,10 @@ fun SearchBar3(
             value = text,
             onValueChange = {
                 text = it
-                onSearch(it)
+                it.text.printToLog("TXTCHANG")
+
             },
-            maxLines = 1,
             singleLine = true,
-            textStyle = TextStyle(color = Color.DarkGray),
             modifier = Modifier
                 .fillMaxWidth()
                 .shadow(5.dp, CircleShape)

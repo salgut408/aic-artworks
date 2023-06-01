@@ -1,6 +1,9 @@
 package com.salvador.artapp.ui.screens.search
 
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -15,10 +18,7 @@ import com.salvador.artapp.domain.use_cases.SearchArtUseCase
 import com.salvador.artapp.utils.Constants.Companion.FIELD_TERMS
 import com.salvador.artapp.utils.printToLog
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,7 +30,9 @@ class SearchViewModel @Inject constructor(
     private val _searchUiState = MutableStateFlow(SearchUiState())
     val searchUiState: StateFlow<SearchUiState> = _searchUiState
 
-    val searchQuery: String = "chicago"
+
+
+    val searchQuery by mutableStateOf( "San francisco")
 
     val art: Flow<PagingData<ArtworkModel>> = Pager(PagingConfig(pageSize = 20)) {
         SearchSource(searchArtUseCase, searchQuery)
@@ -44,6 +46,8 @@ class SearchViewModel @Inject constructor(
 //        art.printToLog("CATS_?")
 
     }
+
+
 
 
      fun searchArtworks(searchQuery: String) = viewModelScope.launch {
@@ -62,6 +66,7 @@ class SearchViewModel @Inject constructor(
                     totalPages = pagination.totalPages
                 )
             }
+
         }
         catch (e: Exception) {
             Log.e("VM_LOAD_ERROR", e.stackTraceToString())

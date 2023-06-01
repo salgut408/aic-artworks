@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -41,8 +42,8 @@ fun ArtApp(
                 navItems.forEach{ screen ->
                     currentDestination?.hierarchy?.any {it.route == screen.route}?.let {
                         BottomNavigationItem(
-                            icon = {Icon(screen.icon, contentDescription = null)},
-                            label = { Text(text = screen.name)},
+                            icon = {Icon(screen.icon, contentDescription = null, tint = Color.White)},
+                            label = { Text(text = screen.name, color = Color.White)},
                             selected = it,
                             alwaysShowLabel = false,
                             onClick = {
