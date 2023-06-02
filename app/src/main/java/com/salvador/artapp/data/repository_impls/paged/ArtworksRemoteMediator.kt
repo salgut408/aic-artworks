@@ -7,16 +7,11 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.salvador.artapp.data.db.ArtRemoteKey
 import com.salvador.artapp.data.db.ArtworksDatabase
-import com.salvador.artapp.data.db.artwork_db.ArtworkDbEntity
 import com.salvador.artapp.data.remote.api.ArtApi
 import com.salvador.artapp.data.remote.network_responses.list.asDomain
 import com.salvador.artapp.domain.domain_models.list.ArtworkModel
-import com.salvador.artapp.domain.domain_models.list.asArtworkDbEntity
-import com.salvador.artapp.domain.repositories.ArtworkRepository
 import com.salvador.artapp.utils.Constants.Companion.FIELD_TERMS
-import retrofit2.HttpException
 import java.io.IOException
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
@@ -55,9 +50,9 @@ class ArtworksRemoteMediator @Inject constructor(
                     nextPage
                 }
             }
-            val response = artApi.getAllArt(FIELD_TERMS, currentPage).body()
+            val response = artApi.getAllArt(FIELD_TERMS, currentPage)
 //                artworkRepository.getFullResponse(FIELD_TERMS, currentPage)
-            val endOfPaginationReached = response?.pagination?.nextUrl?.isEmpty()
+            val endOfPaginationReached = response?.body()?.artwork?.isEmpty()
 
             val prevPage = if(currentPage == 1) null else currentPage - 1
             val nextPage = if(endOfPaginationReached == true) null else currentPage + 1
@@ -67,15 +62,18 @@ class ArtworksRemoteMediator @Inject constructor(
                     artworksDao.clearAllArtworkModels()
                     remoteKeysDao.deleteAllRemoteKeys()
                 }
-                val keys = response?.artwork?.map { artWork ->
-                    ArtRemoteKey(
-                        id = artWork.id.toString(),
-                        prevPage = prevPage,
-                        nextPage = nextPage!!
-                    )
+                val keys = response?.body()?.artwork?.map { artWork ->
+                        ArtRemoteKey(
+                            id = artWork.id.toString(),
+                            prevPage = prevPage,
+                            nextPage = nextPage
+                        )
+
                 }
-                remoteKeysDao.addAllRemoteKeys(remoteKeys = keys ?: listOf())
-                artworksDao.insertArtworksModelList(response?.artwork?.map { it.asDomain() }!!)
+                if (keys != null) {
+                    remoteKeysDao.addAllRemoteKeys(remoteKeys = keys)
+                }
+                artworksDao.insertArtworksModelList(response?.body()?.artwork?.map { it.asDomain() }!!)
             }
             MediatorResult.Success(endOfPaginationReached = endOfPaginationReached == true)
         }

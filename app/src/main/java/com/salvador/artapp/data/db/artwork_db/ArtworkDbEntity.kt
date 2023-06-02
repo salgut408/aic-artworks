@@ -10,7 +10,7 @@ data class ArtworkDbEntity(
     val artistTitle: String = "",
     val classificationTitle: String = "",
     @PrimaryKey(autoGenerate = false)
-    val id: Int = 0,
+    val id: String,
     val imageId: String = "",
     val inscriptions: String = "",
     val latitude: String = "",

@@ -11,7 +11,7 @@ import com.salvador.artapp.domain.domain_models.list.ArtworkModel
     entities = [ArtworkDbEntity:: class,
         ArtworkModel:: class,
         ArtRemoteKey :: class],
-    version = 4,
+    version = 6,
     exportSchema = false
 )
 

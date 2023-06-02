@@ -49,6 +49,7 @@ fun HomeScreen(
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val exhibits = homeScreenViewModel.exhibits.collectAsStateWithLifecycle()
     val ex = exhibits.value
+    val getAllImages = homeScreenViewModel.getAllImages.collectAsLazyPagingItems()
 
     ArtScaffold(
         topBar = {
@@ -66,7 +67,7 @@ fun HomeScreen(
 
                 if (artworks.isNotEmpty()) {
                     ArtworkList(
-                        artworks = homeScreenViewModel.art,
+                        artworks = homeScreenViewModel.getAllImages,
                         contentPaddingValues = padding,
                         onArtworkClick = { },
                         navController = navController

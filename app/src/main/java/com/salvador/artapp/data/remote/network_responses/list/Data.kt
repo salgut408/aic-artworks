@@ -18,7 +18,7 @@ data class ArtDataNetwork(
     @SerializedName("date_start")
     val dateStart: Int? = 0,
     @SerializedName("id")
-    val id: Int? = 0,
+    val id: String,
     @SerializedName("image_id")
     val imageId: String? = "",
     @SerializedName("inscriptions")
@@ -45,7 +45,7 @@ fun ArtDataNetwork.asDomain(): ArtworkModel {
         artistTitle = artistTitle ?: "",
         classificationTitle = classificationTitle ?: "",
         dateStart = dateStart ?: 0,
-        id = id ?: 0,
+        id = id,
         imageId = imageId ?: "",
         inscriptions = inscriptions ?: "",
         latitude = latitude ?: "",

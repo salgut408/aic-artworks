@@ -27,7 +27,7 @@ class ArtworkRepositoryImpl(
 ): ArtworkRepository {
 
     @OptIn(ExperimentalPagingApi::class)
-    fun getAllImages(): Flow<PagingData<ArtworkModel>>{
+     override  fun getAllImagesModels(): Flow<PagingData<ArtworkModel>>{
         val pagingSourceFactory = {artworksDatabase.getArtworkDao().pagingSourceGetAllArtWorkModels()}
         return Pager(
             config = PagingConfig(pageSize = 20),

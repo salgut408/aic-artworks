@@ -41,6 +41,8 @@ class HomeScreenViewModel @Inject constructor(
     private val _randomArt = MutableStateFlow(listOf<RandomImageModel>())
     val randomArt: StateFlow<List<RandomImageModel>> = _randomArt
 
+    val getAllImages = artworkRepository.getAllImagesModels()
+
     val art: Flow<PagingData<ArtworkModel>> = Pager(PagingConfig(pageSize = 20)) {
         ArtSource(getArtworksUseCase)
     }.flow
