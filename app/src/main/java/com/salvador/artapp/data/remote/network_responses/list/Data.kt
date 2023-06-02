@@ -55,7 +55,6 @@ fun ArtDataNetwork.asDomain(): ArtworkModel {
         styleTitle = styleTitle ?: "",
         title = title ?: "",
         colorfullness = score ?: 0.0,
-        color = color?.asDomain()
 
 
     )

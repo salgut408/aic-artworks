@@ -1,13 +1,16 @@
 package com.salvador.artapp.domain.domain_models.list
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.salvador.artapp.data.db.artwork_db.ArtworkDbEntity
 import com.salvador.artapp.domain.domain_models.detail.ColorModel
-
+@Entity(tableName = "artworks_model_table")
 data class ArtworkModel(
     val artistDisplay: String = "",
     val artistTitle: String = "",
     val classificationTitle: String = "",
     val dateStart: Int = 0,
+    @PrimaryKey(autoGenerate = false)
     val id: Int = 0,
     val imageId: String = "",
     val inscriptions: String = "",
@@ -20,7 +23,6 @@ data class ArtworkModel(
     val isFavorite: Boolean = false,
     val imgConfigUrl: String = "",
     val colorfullness: Double = 0.0,
-    val color: ColorModel? = ColorModel(),
 
 
     ) {

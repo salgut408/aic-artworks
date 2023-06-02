@@ -43,7 +43,7 @@ fun HomeScreen(
     navController: NavController,
     homeScreenViewModel: HomeScreenViewModel = hiltViewModel(),
 ) {
-
+//    TODO Sharing intents
     val uiState by homeScreenViewModel.listUiState.collectAsStateWithLifecycle()
     val artworks = uiState.currentList
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
@@ -310,11 +310,7 @@ fun HomeToolbar(
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = title, fontWeight = FontWeight.Bold) },
-        navigationIcon = {
-            Icon(Icons.Default.Search,
-                contentDescription = null,
-                modifier.clickable { })
-        },
+        navigationIcon = { /* TODO make searching here  */},
         scrollBehavior = scrollBehavior,
     )
 }

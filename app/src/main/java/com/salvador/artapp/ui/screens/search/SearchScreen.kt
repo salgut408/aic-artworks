@@ -9,6 +9,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -25,6 +26,8 @@ import com.salvador.artapp.ui.screens.home_screen.ArtworkList
 import com.salvador.artapp.ui.screens.home_screen.SearchBar
 import com.salvador.artapp.ui.screens.home_screen.SearchBar2
 import com.salvador.artapp.utils.printToLog
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.distinctUntilChanged
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -36,24 +39,41 @@ fun SearchScreen(
     ) {
     val uiState by searchViewModel.searchUiState.collectAsStateWithLifecycle()
     val artworks = uiState.currentList
+    val searchText by searchViewModel.searchQuery.collectAsState()
+
+    val artworks2 = remember { mutableStateOf(searchViewModel.art) }
+
+    val txtState = rememberSaveable{ mutableStateOf("") }
+
 
 
     ArtScaffold(
         topBar = {
-            SearchBar3( onSearch = {})
+//            SearchBar3( onSearch = {})
 //            TextFieldDemo()
+                 TextField(
+                     value = txtState.value,
+                     onValueChange = {
+                         txtState.value = it
+                         searchViewModel.onSearchChange(it)
+                                     },
+                     modifier = Modifier.fillMaxWidth(),
+                     label = { Text(text = "Search")}
+                 )
+
 
 
 
         },
         content = { padding ->
             Column(modifier = Modifier.fillMaxWidth()) {
-
+//                artworks.map { Text(text = it.title) }
 
             }
             if (artworks.isNotEmpty()) {
+
                 ArtworkList(
-                    artworks = searchViewModel.art,
+                    artworks = artworks2.value,
                     contentPaddingValues = padding ,
                     onArtworkClick = {},
                     navController = navController

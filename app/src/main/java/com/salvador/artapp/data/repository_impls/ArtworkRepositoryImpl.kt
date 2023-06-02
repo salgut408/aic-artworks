@@ -31,6 +31,8 @@ class ArtworkRepositoryImpl(
         artworksDatabase.getArtworkDao().insertArtworksList(art.map { it.asArtworkDbEntity() })
     }
 
+
+
     override suspend fun getArtDetail(
         id: String,
     ): ArtDetail {
@@ -50,5 +52,9 @@ class ArtworkRepositoryImpl(
             return response.body()?.randomImages!!.map { it?.asDomain()!! }
         }
         return response.body()?.randomImages?.map { it?.asDomain()!! } !!
+    }
+
+    override suspend fun getAllArtFromDb(): List<ArtworkModel> {
+        TODO("Not yet implemented")
     }
 }
