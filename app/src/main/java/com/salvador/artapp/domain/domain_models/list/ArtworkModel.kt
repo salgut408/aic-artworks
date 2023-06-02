@@ -2,8 +2,6 @@ package com.salvador.artapp.domain.domain_models.list
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.salvador.artapp.data.db.artwork_db.ArtworkDbEntity
-import com.salvador.artapp.domain.domain_models.detail.ColorModel
 @Entity(tableName = "artworks_model_table")
 data class ArtworkModel(
     val artistDisplay: String = "",
@@ -32,17 +30,3 @@ data class ArtworkModel(
     }
 }
 
-fun ArtworkModel.asArtworkDbEntity(): ArtworkDbEntity {
-    return ArtworkDbEntity(
-        artistDisplay = artistDisplay,
-        artistTitle = artistTitle,
-        classificationTitle = classificationTitle,
-        id = id,
-        imageId = imageId,
-        inscriptions = inscriptions,
-        latitude = latitude,
-        longitude = longitude,
-        mediumDisplay = mediumDisplay,
-        provenanceText = provenanceText
-    )
-}

@@ -2,16 +2,16 @@ package com.salvador.artapp.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.salvador.artapp.data.db.artwork_db.ArtworkDbEntity
 import com.salvador.artapp.data.db.artwork_db.RemoteKeysDao
 import com.salvador.artapp.domain.domain_models.list.ArtworkModel
 
 
 @Database(
-    entities = [ArtworkDbEntity:: class,
+    entities = [
         ArtworkModel:: class,
-        ArtRemoteKey :: class],
-    version = 6,
+        ArtRemoteKey :: class
+               ],
+    version = 7,
     exportSchema = false
 )
 

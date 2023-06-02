@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface ArtworkRepository {
     suspend fun searchForArtworks(fieldTerms: String, searchQuery: String, pageNumber: Int): ArtResponseModel
-    suspend fun saveAllArt(art: List<ArtworkModel>)
     suspend fun getArtDetail( id:String): ArtDetail
     suspend fun getFullResponse(fieldTerms: String, pageNumber: Int): ArtResponseModel
     suspend fun getRandomImages(pageNumber: Int): List<RandomImageModel> // TODO change to ArtResponseModel

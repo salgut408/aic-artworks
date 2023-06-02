@@ -9,7 +9,7 @@ import com.salvador.artapp.domain.use_cases.SearchArtUseCase
 import com.salvador.artapp.utils.Constants.Companion.FIELD_TERMS
 import kotlinx.coroutines.flow.Flow
 
-// paged searchsource has the searchArtUseCase which has the art repository
+// paged searchSource has the searchArtUseCase which has the art repository
 class SearchSource(
     private val artworkRepository: ArtworkRepository,
     private val searchQuery: String,

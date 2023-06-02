@@ -7,6 +7,7 @@ import com.salvador.artapp.domain.repositories.ArtworkRepository
 import com.salvador.artapp.domain.use_cases.GetArtworksUseCase
 import com.salvador.artapp.utils.Constants.Companion.FIELD_TERMS
 
+// NOT NEEDED
 class ArtSource(
     private val getArtworksUseCase: GetArtworksUseCase
 ): PagingSource<Int, ArtworkModel>() {

@@ -15,7 +15,6 @@ import com.salvador.artapp.data.repository_impls.paged.ArtworksRemoteMediator
 import com.salvador.artapp.domain.domain_models.detail.ArtDetail
 import com.salvador.artapp.domain.domain_models.list.ArtResponseModel
 import com.salvador.artapp.domain.domain_models.list.ArtworkModel
-import com.salvador.artapp.domain.domain_models.list.asArtworkDbEntity
 import com.salvador.artapp.domain.domain_models.random_image.RandomImageModel
 import com.salvador.artapp.domain.repositories.ArtworkRepository
 import com.salvador.artapp.utils.Constants.Companion.FIELD_TERMS
@@ -46,12 +45,6 @@ class ArtworkRepositoryImpl(
     ): ArtResponseModel =
          artApi.searchForArt(fieldTerms, searchQuery, pageNumber).body()?.asDomain()!!
 
-    override suspend fun saveAllArt(art: List<ArtworkModel>) {
-        artworksDatabase.getArtworkDao().insertArtworksList(art.map { it.asArtworkDbEntity() })
-    }
-
-
-
     override suspend fun getArtDetail(
         id: String,
     ): ArtDetail {
@@ -68,9 +61,9 @@ class ArtworkRepositoryImpl(
     override suspend fun getRandomImages(pageNumber: Int): List<RandomImageModel> {
         val response = artApi.getRandomImages(pageNumber)
         if (response.isSuccessful){
-            return response.body()?.randomImages!!.map { it?.asDomain()!! }
+            return response.body()?.randomImages?.map { it.asDomain() } ?: listOf()
         }
-        return response.body()?.randomImages?.map { it?.asDomain()!! } !!
+        return response.body()?.randomImages?.map { it.asDomain() } ?: listOf()
     }
 
     override suspend fun getAllArtFromDb(): List<ArtworkModel> {
