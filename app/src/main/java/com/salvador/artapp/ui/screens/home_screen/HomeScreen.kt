@@ -260,9 +260,11 @@ fun ArtworkItem(
                 .clickable {
                     navController.navigate(
                         NavigationScreens.DetailScreen.withArgs(
-                            artwork.id.toString()
+                            artwork.id
                         )
-                    )
+                    ){
+                        // ???
+                    }
                 }
                 .padding(8.dp)
 
