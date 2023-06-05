@@ -1,5 +1,7 @@
 package com.salvador.artapp.ui.screens.home_screen
 
+import android.view.MenuItem
+import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -36,6 +38,20 @@ import com.salvador.artapp.domain.domain_models.list.ArtworkModel
 import com.salvador.artapp.ui.common_comps.*
 import com.salvador.artapp.ui.navigation.NavigationScreens
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
+
+class CountdownMenu(index: Int, name: String){
+    var index: Int = index
+    var name: String = name
+}
+
+fun MenuItems(): List<CountdownMenu>{
+    val menuItems = mutableListOf<CountdownMenu>()
+    for ( i in 1..20){
+        menuItems.add(CountdownMenu(i, "Option$i"))
+    }
+    return menuItems
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,31 +67,73 @@ fun HomeScreen(
     val ex = exhibits.value
     val getAllImages = homeScreenViewModel.getAllImages.collectAsLazyPagingItems()
 
-    ArtScaffold(
-        topBar = {
-            HomeToolbar(
-                title = "ART",
-                scrollBehavior = scrollBehavior
+    val drawerstate = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+    val menuItems: List<CountdownMenu> = MenuItems()
+    val selectedItem: MutableState<CountdownMenu> = remember{mutableStateOf(menuItems[0])}
+
+
+    ModalNavigationDrawer(
+        drawerState = drawerstate,
+        drawerContent = {
+            ModalDrawerSheet(
+                drawerContainerColor = Color.Green,
+                drawerContentColor = Color.Red,
+                content = {
+                    LazyColumn {
+                        items(menuItems){item ->
+                            NavigationDrawerItem(
+                                label = { Text(item.name) },
+                                selected = item.index == selectedItem.value.index,
+                                onClick = {
+                                    selectedItem.value = item
+                                    scope.launch { drawerstate.close() }
+                                },
+                                colors = NavigationDrawerItemDefaults.colors(
+                                    unselectedContainerColor = Color.Transparent,
+                                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                ),
+                                modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                            )
+                        }
+                    }
+                }
             )
         },
-        content = { padding ->
-            Column(modifier = Modifier.fillMaxWidth()) {
+        content = {
+            ArtScaffold(
+                topBar = {
+                    HomeToolbar(
+                        title = "ART",
+                        scrollBehavior = scrollBehavior
+                    )
+                },
+                content = { padding ->
+                    Column(modifier = Modifier.fillMaxWidth()) {
 
 //                SimpleFlowRow(list = ex)
 
-                ExhibitionsRow(list = ex, contentPaddingValues = padding, modifier = Modifier)
+                        ExhibitionsRow(list = ex, contentPaddingValues = padding, modifier = Modifier)
 
-                if (artworks.isNotEmpty()) {
-                    ArtworkList(
-                        artworks = homeScreenViewModel.getAllImages,
-                        contentPaddingValues = padding,
-                        onArtworkClick = { },
-                        navController = navController
-                    )
+                        if (artworks.isNotEmpty()) {
+                            ArtworkList(
+                                artworks = homeScreenViewModel.getAllImages,
+                                contentPaddingValues = padding,
+                                onArtworkClick = { },
+                                navController = navController
+                            )
+                        }
+                    }
                 }
-            }
+            )
         }
     )
+
+
+
+
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -111,47 +169,37 @@ fun SimpleFlowRow(list: List<ExhibitModel>) {
 }
 
 @Composable
+fun ExhibitionItem(
+    modifier: Modifier,
+    exhibit: ExhibitModel,
+) {
+    Card(modifier = modifier.width(200.dp)) {
+        BasicImage(
+            modifier = modifier.size(200.dp),
+            imgUrl = exhibit.imageUrl ?: "",
+            contentDescription = exhibit.title,
+            elevation = 0.dp,
+            backgroundColor = Color.Transparent,
+            borderWidth = 0.dp,
+            borderColor = Color.Transparent,
+            shape = RectangleShape
+        )
+        Text(text = exhibit.title ?: "", softWrap = true, modifier = modifier.padding(start = 8.dp, end = 8.dp, bottom = 4.dp))
+    }
+}
+
+@Composable
 fun ExhibitionsRow(
     list: List<ExhibitModel>,
     contentPaddingValues: PaddingValues,
     modifier: Modifier,
 ) {
-//    Column(modifier = modifier.fillMaxWidth()) {
-
     LazyRow(
         contentPadding = contentPaddingValues,
     ) {
         items(list) { exhibit ->
-            Card(modifier
-//                    .fillMaxWidth()
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-//                        horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = modifier.padding(16.dp)
-                ) {
-
-                    Text(text = exhibit.title ?: "",
-                        fontWeight = FontWeight.Bold,
-                        modifier = modifier.width(180.dp))
-
-                    BasicImage(
-                        imgUrl = exhibit.imageUrl ?: "0",
-                        contentDescription = "",
-                        elevation = 0.dp,
-                        backgroundColor = Color.Transparent,
-                        borderWidth = 0.dp,
-                        borderColor = Color.Transparent,
-                        shape = RoundedCornerShape(8.dp),
-                        modifier = modifier
-                            .wrapContentSize()
-                            .size(100.dp)
-                    )
-                }
-
-//                    HtmlText(html = exhibit.shortDescription ?: "", modifier = modifier.padding(start = 16.dp))
-            }
-            Spacer(modifier = modifier.width(8.dp))
+            ExhibitionItem(modifier = modifier, exhibit = exhibit)
+            Spacer(modifier = modifier.width(4.dp))
         }
     }
 
@@ -262,7 +310,7 @@ fun ArtworkItem(
                         NavigationScreens.DetailScreen.withArgs(
                             artwork.id
                         )
-                    ){
+                    ) {
                         // ???
                     }
                 }
@@ -313,7 +361,7 @@ fun HomeToolbar(
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = title, fontWeight = FontWeight.Bold) },
-        navigationIcon = { /* TODO make searching here  */},
+        navigationIcon = { /* TODO make searching here  */ },
         scrollBehavior = scrollBehavior,
     )
 }
