@@ -36,9 +36,9 @@ fun ExhibitionScreen(
 
 
     ArtScaffold(
-        topBar = { HomeToolbar(title = "Sxhibits", scrollBehavior = scrollBehavior) },
+        topBar = { HomeToolbar(title = "Exhibits", scrollBehavior = scrollBehavior) },
         content = { padding ->
-            Column(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
                 ExhibitionsRow(
                     list = exhibits,
                     contentPaddingValues = padding,
@@ -56,11 +56,10 @@ fun ExhibitionsRow(
     contentPaddingValues: PaddingValues,
     modifier: Modifier,
 ) {
-    val exhibs = list
     LazyColumn(
         contentPadding = contentPaddingValues,
     ) {
-        items(exhibs) { exhibit ->
+        items(list) { exhibit ->
             ExhibitionItem(modifier = modifier, exhibit = exhibit ?: ExhibitModel())
             Spacer(modifier = modifier.height(4.dp))
         }
