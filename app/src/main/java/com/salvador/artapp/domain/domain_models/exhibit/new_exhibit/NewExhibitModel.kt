@@ -1,20 +1,21 @@
-package com.salvador.artapp.domain.domain_models.exhibit
+package com.salvador.artapp.domain.domain_models.exhibit.new_exhibit
 
 import com.google.gson.annotations.SerializedName
+import com.salvador.artapp.data.remote.network_responses.exhibitions.new_exhibits.SuggestAutocompleteAll
 
-data class ExhibitModel(
+data class NewExhibitModel(
+
     val aicEndAt: String? = "",
     val aicStartAt: String? = "",
-    val altImageIds: List<String?>? = listOf(),
+    val altImageIds: List<String> = listOf(),
     val apiLink: String? = "",
     val apiModel: String? = "",
-    val artistIds: List<Int?>? = listOf(),
-    val artworkIds: List<Int?>? = listOf(),
-    val artworkTitles: List<String?>? = listOf(),
-    val documentIds: List<Any?>? = listOf(),
+    val artistIds: List<String> = listOf(),
+    val artworkIds: List<String> = listOf(),
+    val artworkTitles: List<String> = listOf(),
     val galleryId: Int? = 0,
     val galleryTitle: String? = "",
-    val id: Int? = 0,
+    val id: String? = "",
     val imageId: String? = "",
     val imageUrl: String? = "",
     val isFeatured: Boolean? = false,

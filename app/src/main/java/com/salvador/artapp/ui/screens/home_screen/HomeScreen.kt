@@ -35,24 +35,13 @@ import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.salvador.artapp.domain.domain_models.exhibit.ExhibitModel
+import com.salvador.artapp.domain.domain_models.exhibit.new_exhibit.NewExhibitModel
 import com.salvador.artapp.domain.domain_models.list.ArtworkModel
 import com.salvador.artapp.ui.common_comps.*
 import com.salvador.artapp.ui.navigation.NavigationScreens
 import com.salvador.artapp.utils.printToLog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-
-class CountdownMenu(var index: Int, var name: String){
-}
-
-fun MenuItems(): List<CountdownMenu>{
-    val menuItems = mutableListOf<CountdownMenu>()
-    for ( i in 1..20){
-        menuItems.add(CountdownMenu(i, "Option$i"))
-    }
-    return menuItems
-}
-
 
 
 
@@ -72,42 +61,38 @@ fun HomeScreen(
     val getAllImages = homeScreenViewModel.getAllImages.collectAsLazyPagingItems()
 
 
-            ArtScaffold(
-                topBar = {
-                    HomeToolbar(
-                        title = "ART",
-                        scrollBehavior = scrollBehavior
-                    )
-                },
-                content = { padding ->
-                    Column(modifier = Modifier.fillMaxWidth()) {
+    ArtScaffold(
+        topBar = {
+            HomeToolbar(
+                title = "ART",
+                scrollBehavior = scrollBehavior
+            )
+        },
+        content = { padding ->
+            Column(modifier = Modifier.fillMaxWidth()) {
 
 //                SimpleFlowRow(list = ex)
 
-                        ExhibitionsRow(list = ex, contentPaddingValues = padding, modifier = Modifier)
+                ExhibitionsRow(list = ex, contentPaddingValues = padding, modifier = Modifier)
 
-                        if (artworks.isNotEmpty()) {
-                            ArtworkList(
-                                artworks = homeScreenViewModel.getAllImages,
-                                contentPaddingValues = padding,
-                                onArtworkClick = { },
-                                navController = navController
-                            )
-                        }
-                    }
+                if (artworks.isNotEmpty()) {
+                    ArtworkList(
+                        artworks = homeScreenViewModel.getAllImages,
+                        contentPaddingValues = padding,
+                        onArtworkClick = { },
+                        navController = navController
+                    )
                 }
-            )
-
-
-
-
+            }
+        }
+    )
 
 
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun SimpleFlowRow(list: List<ExhibitModel>) {
+fun SimpleFlowRow(list: List<NewExhibitModel>) {
     FlowRow(
         Modifier
             .fillMaxWidth(1f)
@@ -140,7 +125,7 @@ fun SimpleFlowRow(list: List<ExhibitModel>) {
 @Composable
 fun ExhibitionItem(
     modifier: Modifier,
-    exhibit: ExhibitModel,
+    exhibit: NewExhibitModel,
 ) {
     Card(modifier = modifier.width(200.dp)) {
         BasicImage(
@@ -153,13 +138,15 @@ fun ExhibitionItem(
             borderColor = Color.Transparent,
             shape = RectangleShape
         )
-        Text(text = exhibit.title ?: "", softWrap = true, modifier = modifier.padding(start = 8.dp, end = 8.dp, bottom = 4.dp))
+        Text(text = exhibit.title ?: "",
+            softWrap = true,
+            modifier = modifier.padding(start = 8.dp, end = 8.dp, bottom = 4.dp))
     }
 }
 
 @Composable
 fun ExhibitionsRow(
-    list: List<ExhibitModel>,
+    list: List<NewExhibitModel>,
     contentPaddingValues: PaddingValues,
     modifier: Modifier,
 ) {

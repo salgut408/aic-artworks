@@ -1,34 +1,32 @@
-package com.salvador.artapp.data.remote.network_responses.exhibitions
+package com.salvador.artapp.data.remote.network_responses.exhibitions.new_exhibits
 
 
 import com.google.gson.annotations.SerializedName
-import com.salvador.artapp.domain.domain_models.exhibit.ExhibitModel
+import com.salvador.artapp.domain.domain_models.exhibit.new_exhibit.NewExhibitModel
 
-data class Exhibit(
+data class ExhibitNetwork(
     @SerializedName("aic_end_at")
     val aicEndAt: String? = "",
     @SerializedName("aic_start_at")
     val aicStartAt: String? = "",
     @SerializedName("alt_image_ids")
-    val altImageIds: List<String?>? = listOf(),
+    val altImageIds: List<String> = listOf(),
     @SerializedName("api_link")
     val apiLink: String? = "",
     @SerializedName("api_model")
     val apiModel: String? = "",
     @SerializedName("artist_ids")
-    val artistIds: List<Int?>? = listOf(),
+    val artistIds: List<String> = listOf(),
     @SerializedName("artwork_ids")
-    val artworkIds: List<Int?>? = listOf(),
+    val artworkIds: List<String> = listOf(),
     @SerializedName("artwork_titles")
-    val artworkTitles: List<String?>? = listOf(),
-    @SerializedName("document_ids")
-    val documentIds: List<Any?>? = listOf(),
+    val artworkTitles: List<String> = listOf(),
     @SerializedName("gallery_id")
     val galleryId: Int? = 0,
     @SerializedName("gallery_title")
     val galleryTitle: String? = "",
     @SerializedName("id")
-    val id: Int? = 0,
+    val id: String? = "",
     @SerializedName("image_id")
     val imageId: String? = "",
     @SerializedName("image_url")
@@ -43,6 +41,8 @@ data class Exhibit(
     val sourceUpdatedAt: String? = "",
     @SerializedName("status")
     val status: String? = "",
+    @SerializedName("suggest_autocomplete_all")
+    val suggestAutocompleteAll: SuggestAutocompleteAll? = SuggestAutocompleteAll(),
     @SerializedName("suggest_autocomplete_boosted")
     val suggestAutocompleteBoosted: String? = "",
     @SerializedName("timestamp")
@@ -54,9 +54,8 @@ data class Exhibit(
     @SerializedName("web_url")
     val webUrl: String? = ""
 )
-
-fun Exhibit.asDomain(): ExhibitModel {
-    return ExhibitModel(
+fun ExhibitNetwork.asDomain(): NewExhibitModel {
+    return NewExhibitModel(
         aicEndAt = aicEndAt,
         aicStartAt = aicStartAt,
         altImageIds = altImageIds,
@@ -65,18 +64,16 @@ fun Exhibit.asDomain(): ExhibitModel {
         artistIds = artistIds,
         artworkIds = artworkIds,
         artworkTitles = artworkTitles,
-        documentIds = documentIds,
         galleryId = galleryId,
         galleryTitle = galleryTitle,
         id = id,
         imageId = imageId,
         imageUrl = imageUrl,
-        isFeatured =isFeatured,
+        isFeatured = isFeatured,
         shortDescription = shortDescription,
         siteIds = siteIds,
         sourceUpdatedAt = sourceUpdatedAt,
-        status = status,
-        suggestAutocompleteBoosted = suggestAutocompleteBoosted,
+        status=status,
         timestamp = timestamp,
         title = title,
         updatedAt = updatedAt,

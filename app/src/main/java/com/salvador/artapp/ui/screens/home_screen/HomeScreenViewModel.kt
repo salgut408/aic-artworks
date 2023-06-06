@@ -3,7 +3,7 @@ package com.salvador.artapp.ui.screens.home_screen
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.salvador.artapp.domain.domain_models.exhibit.ExhibitModel
+import com.salvador.artapp.domain.domain_models.exhibit.new_exhibit.NewExhibitModel
 import com.salvador.artapp.domain.domain_models.list.ArtworkModel
 import com.salvador.artapp.domain.domain_models.list.ConfigModel
 import com.salvador.artapp.domain.domain_models.list.PaginationModel
@@ -33,8 +33,8 @@ class HomeScreenViewModel @Inject constructor(
     private val _listUiState = MutableStateFlow(ListUiState(isLoading = true))
     val listUiState: StateFlow<ListUiState> = _listUiState.asStateFlow()
 
-    private val _exhibits = MutableStateFlow(listOf<ExhibitModel>())
-    val exhibits: StateFlow<List<ExhibitModel>> = _exhibits.asStateFlow()
+    private val _exhibits = MutableStateFlow(listOf<NewExhibitModel>())
+    val exhibits: StateFlow<List<NewExhibitModel>> = _exhibits.asStateFlow()
 
     private val _randomArt = MutableStateFlow(listOf<RandomImageModel>())
     val randomArt: StateFlow<List<RandomImageModel>> = _randomArt
@@ -75,7 +75,7 @@ class HomeScreenViewModel @Inject constructor(
                 )
 
                 val exhibits = getExhibitsUseCase(1)
-                _exhibits.emit(exhibits)
+                _exhibits.emit(exhibits.exhibits)
 
                 val randomArt = getRandomArtUseCase(1)
                 _randomArt.emit(randomArt)

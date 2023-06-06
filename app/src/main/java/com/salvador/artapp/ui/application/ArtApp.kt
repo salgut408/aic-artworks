@@ -1,15 +1,10 @@
 package com.salvador.artapp.ui.application
 
-import android.content.res.Resources
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.ScaffoldState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -17,13 +12,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.Navigation
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.salvador.artapp.ui.common_comps.ArtScaffold
-import com.salvador.artapp.ui.common_comps.MainBarWithDrawer
-import com.salvador.artapp.ui.common_comps.MenuOptions
-import com.salvador.artapp.ui.common_comps.MenuSelectionOptions
 import com.salvador.artapp.ui.navigation.Navigation
 import com.salvador.artapp.ui.navigation.NavigationScreens
 import kotlinx.coroutines.CoroutineScope
@@ -36,7 +26,7 @@ fun ArtApp(
 
 ) {
     val appState = rememberAppState()
-    val navItems = listOf(NavigationScreens.HomeScreen, NavigationScreens.SearchScreen, NavigationScreens.FavoritesScreen)
+    val navItems = listOf(NavigationScreens.HomeScreen, NavigationScreens.SearchScreen, NavigationScreens.FavoritesScreen, NavigationScreens.ExhibitsScreen)
 
     val selectedItem = remember { mutableStateOf(navItems[0]) }
 

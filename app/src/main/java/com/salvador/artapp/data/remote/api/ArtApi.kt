@@ -2,6 +2,7 @@ package com.salvador.artapp.data.remote.api
 
 import com.salvador.artapp.data.remote.network_responses.detail.NetworkDetail
 import com.salvador.artapp.data.remote.network_responses.exhibitions.ExhibitionsNetworkResponse
+import com.salvador.artapp.data.remote.network_responses.exhibitions.new_exhibits.ExhibitNetworkResponse
 import com.salvador.artapp.data.remote.network_responses.list.NetworkResponse
 import com.salvador.artapp.data.remote.network_responses.random_images.RandomImagesNetworkResponse
 import retrofit2.Response
@@ -58,7 +59,7 @@ interface ArtApi {
     suspend fun getExhibitions(
         @Query("page")
         pageNumber: Int
-    ): Response<ExhibitionsNetworkResponse>
+    ): Response<ExhibitNetworkResponse>
 
     @GET("images")
     suspend fun getRandomImages (
