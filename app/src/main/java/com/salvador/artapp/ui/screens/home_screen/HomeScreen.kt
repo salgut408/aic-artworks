@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -37,12 +38,11 @@ import com.salvador.artapp.domain.domain_models.exhibit.ExhibitModel
 import com.salvador.artapp.domain.domain_models.list.ArtworkModel
 import com.salvador.artapp.ui.common_comps.*
 import com.salvador.artapp.ui.navigation.NavigationScreens
+import com.salvador.artapp.utils.printToLog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class CountdownMenu(index: Int, name: String){
-    var index: Int = index
-    var name: String = name
+class CountdownMenu(var index: Int, var name: String){
 }
 
 fun MenuItems(): List<CountdownMenu>{
@@ -52,6 +52,10 @@ fun MenuItems(): List<CountdownMenu>{
     }
     return menuItems
 }
+
+
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,42 +71,7 @@ fun HomeScreen(
     val ex = exhibits.value
     val getAllImages = homeScreenViewModel.getAllImages.collectAsLazyPagingItems()
 
-    val drawerstate = rememberDrawerState(initialValue = DrawerValue.Closed)
-    val scope = rememberCoroutineScope()
-    val menuItems: List<CountdownMenu> = MenuItems()
-    val selectedItem: MutableState<CountdownMenu> = remember{mutableStateOf(menuItems[0])}
 
-
-    ModalNavigationDrawer(
-        drawerState = drawerstate,
-        drawerContent = {
-            ModalDrawerSheet(
-                drawerContainerColor = Color.Green,
-                drawerContentColor = Color.Red,
-                content = {
-                    LazyColumn {
-                        items(menuItems){item ->
-                            NavigationDrawerItem(
-                                label = { Text(item.name) },
-                                selected = item.index == selectedItem.value.index,
-                                onClick = {
-                                    selectedItem.value = item
-                                    scope.launch { drawerstate.close() }
-                                },
-                                colors = NavigationDrawerItemDefaults.colors(
-                                    unselectedContainerColor = Color.Transparent,
-                                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
-                                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                                    selectedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                ),
-                                modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                            )
-                        }
-                    }
-                }
-            )
-        },
-        content = {
             ArtScaffold(
                 topBar = {
                     HomeToolbar(
@@ -128,8 +97,8 @@ fun HomeScreen(
                     }
                 }
             )
-        }
-    )
+
+
 
 
 
@@ -361,7 +330,7 @@ fun HomeToolbar(
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = title, fontWeight = FontWeight.Bold) },
-        navigationIcon = { /* TODO make searching here  */ },
+        navigationIcon = { Icon(Icons.Default.Menu, contentDescription = null) },
         scrollBehavior = scrollBehavior,
     )
 }
