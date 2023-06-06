@@ -21,6 +21,7 @@ import androidx.paging.compose.items
 import com.salvador.artapp.domain.domain_models.exhibit.new_exhibit.ExhibitModel
 import com.salvador.artapp.ui.common_comps.ArtScaffold
 import com.salvador.artapp.ui.common_comps.BasicImage
+import com.salvador.artapp.ui.common_comps.HtmlText
 import com.salvador.artapp.ui.screens.home_screen.HomeToolbar
 
 
@@ -91,6 +92,10 @@ fun ExhibitionItem(
             modifier = modifier.padding(start = 8.dp, end = 8.dp, bottom = 4.dp),
             fontWeight = FontWeight.Bold
         )
-        Text(text = exhibit.shortDescription ?: "")
+        HtmlText(
+            html = exhibit.shortDescription ?: "",
+            modifier = modifier.padding(start = 8.dp, end = 8.dp, bottom = 4.dp),
+            )
+
     }
 }
