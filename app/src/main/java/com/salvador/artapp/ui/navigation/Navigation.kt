@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.salvador.artapp.ui.application.ArtAppState
 import com.salvador.artapp.ui.screens.artwork_detail.DetailScreen
+import com.salvador.artapp.ui.screens.exhibits.ExhibitionScreen
 import com.salvador.artapp.ui.screens.home_screen.HomeScreen
 import com.salvador.artapp.ui.screens.search.SearchScreen
 
@@ -53,6 +54,11 @@ fun Navigation(
             route = NavigationScreens.SearchScreen.route
         ) {
             SearchScreen(navController = appState.navController)
+        }
+        composable(
+            route = NavigationScreens.ExhibitsScreen.route
+        ){
+            ExhibitionScreen(navController = appState.navController)
         }
     }
 

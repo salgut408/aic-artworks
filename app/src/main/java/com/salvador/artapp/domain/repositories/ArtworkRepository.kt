@@ -14,7 +14,7 @@ interface ArtworkRepository {
     suspend fun getArtDetail( id:String): ArtDetail
     suspend fun getFullResponse(fieldTerms: String, pageNumber: Int): ArtResponseModel
     suspend fun getRandomImages(pageNumber: Int): List<RandomImageModel> // TODO change to ArtResponseModel
-    suspend fun getAllArtFromDb(): List<ArtworkModel>
+    suspend fun getAllFavoritesArtFromDb(): List<ArtworkModel>
      fun getAllImagesModels(): Flow<PagingData<ArtworkModel>>
 
 

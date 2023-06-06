@@ -2,7 +2,7 @@ package com.salvador.artapp.data.remote.network_responses.exhibitions.new_exhibi
 
 
 import com.google.gson.annotations.SerializedName
-import com.salvador.artapp.domain.domain_models.exhibit.new_exhibit.NewExhibitModel
+import com.salvador.artapp.domain.domain_models.exhibit.new_exhibit.ExhibitModel
 
 data class ExhibitNetwork(
     @SerializedName("aic_end_at")
@@ -54,8 +54,8 @@ data class ExhibitNetwork(
     @SerializedName("web_url")
     val webUrl: String? = ""
 )
-fun ExhibitNetwork.asDomain(): NewExhibitModel {
-    return NewExhibitModel(
+fun ExhibitNetwork.asDomain(): ExhibitModel {
+    return ExhibitModel(
         aicEndAt = aicEndAt,
         aicStartAt = aicStartAt,
         altImageIds = altImageIds,

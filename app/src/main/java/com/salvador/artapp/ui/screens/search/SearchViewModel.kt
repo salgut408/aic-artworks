@@ -27,12 +27,10 @@ class SearchViewModel @Inject constructor(
     private val artworkRepository: ArtworkRepository,
     private val searchArtUseCase: SearchArtUseCase,
 ) : ViewModel() {
+
     private val _searchUiState = MutableStateFlow(SearchUiState())
     val searchUiState: StateFlow<SearchUiState> = _searchUiState
-
-
-
-    val _searchQuery = MutableStateFlow( "")
+    private val _searchQuery = MutableStateFlow( "")
     val searchQuery = _searchQuery.asStateFlow()
 
 
@@ -50,8 +48,6 @@ class SearchViewModel @Inject constructor(
         _searchQuery.value = text
 
     }
-
-
 
 
      fun searchArtworks(searchQuery: String) = viewModelScope.launch {

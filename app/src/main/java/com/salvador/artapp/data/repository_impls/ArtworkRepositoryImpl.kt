@@ -66,7 +66,7 @@ class ArtworkRepositoryImpl(
         return response.body()?.randomImages?.map { it.asDomain() } ?: listOf()
     }
 
-    override suspend fun getAllArtFromDb(): List<ArtworkModel> {
+    override suspend fun getAllFavoritesArtFromDb(): List<ArtworkModel> {
         TODO("Not yet implemented")
     }
 }

@@ -1,9 +1,6 @@
 package com.salvador.artapp.domain.domain_models.exhibit.new_exhibit
 
-import com.google.gson.annotations.SerializedName
-import com.salvador.artapp.data.remote.network_responses.exhibitions.new_exhibits.SuggestAutocompleteAll
-
-data class NewExhibitModel(
+data class ExhibitModel(
 
     val aicEndAt: String? = "",
     val aicStartAt: String? = "",

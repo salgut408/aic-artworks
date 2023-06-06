@@ -1,19 +1,15 @@
 package com.salvador.artapp.ui.screens.home_screen
 
-import android.view.MenuItem
-import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,7 +20,6 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,16 +29,11 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
-import com.salvador.artapp.domain.domain_models.exhibit.ExhibitModel
-import com.salvador.artapp.domain.domain_models.exhibit.new_exhibit.NewExhibitModel
+import com.salvador.artapp.domain.domain_models.exhibit.new_exhibit.ExhibitModel
 import com.salvador.artapp.domain.domain_models.list.ArtworkModel
 import com.salvador.artapp.ui.common_comps.*
 import com.salvador.artapp.ui.navigation.NavigationScreens
-import com.salvador.artapp.utils.printToLog
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
-
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,10 +61,6 @@ fun HomeScreen(
         content = { padding ->
             Column(modifier = Modifier.fillMaxWidth()) {
 
-//                SimpleFlowRow(list = ex)
-
-                ExhibitionsRow(list = ex, contentPaddingValues = padding, modifier = Modifier)
-
                 if (artworks.isNotEmpty()) {
                     ArtworkList(
                         artworks = homeScreenViewModel.getAllImages,
@@ -92,7 +78,7 @@ fun HomeScreen(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun SimpleFlowRow(list: List<NewExhibitModel>) {
+fun SimpleFlowRow(list: List<ExhibitModel>) {
     FlowRow(
         Modifier
             .fillMaxWidth(1f)
@@ -120,45 +106,6 @@ fun SimpleFlowRow(list: List<NewExhibitModel>) {
             }
         }
     }
-}
-
-@Composable
-fun ExhibitionItem(
-    modifier: Modifier,
-    exhibit: NewExhibitModel,
-) {
-    Card(modifier = modifier.width(200.dp)) {
-        BasicImage(
-            modifier = modifier.size(200.dp),
-            imgUrl = exhibit.imageUrl ?: "",
-            contentDescription = exhibit.title,
-            elevation = 0.dp,
-            backgroundColor = Color.Transparent,
-            borderWidth = 0.dp,
-            borderColor = Color.Transparent,
-            shape = RectangleShape
-        )
-        Text(text = exhibit.title ?: "",
-            softWrap = true,
-            modifier = modifier.padding(start = 8.dp, end = 8.dp, bottom = 4.dp))
-    }
-}
-
-@Composable
-fun ExhibitionsRow(
-    list: List<NewExhibitModel>,
-    contentPaddingValues: PaddingValues,
-    modifier: Modifier,
-) {
-    LazyRow(
-        contentPadding = contentPaddingValues,
-    ) {
-        items(list) { exhibit ->
-            ExhibitionItem(modifier = modifier, exhibit = exhibit)
-            Spacer(modifier = modifier.width(4.dp))
-        }
-    }
-
 }
 
 
