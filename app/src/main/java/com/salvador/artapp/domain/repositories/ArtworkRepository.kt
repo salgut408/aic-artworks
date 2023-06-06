@@ -1,8 +1,6 @@
 package com.salvador.artapp.domain.repositories
 
 import androidx.paging.PagingData
-import com.salvador.artapp.data.remote.network_responses.detail.NetworkDetail
-import com.salvador.artapp.data.remote.network_responses.random_images.RandomImage
 import com.salvador.artapp.domain.domain_models.detail.ArtDetail
 import com.salvador.artapp.domain.domain_models.list.ArtworkModel
 import com.salvador.artapp.domain.domain_models.list.ArtResponseModel
@@ -15,7 +13,7 @@ interface ArtworkRepository {
     suspend fun getFullResponse(fieldTerms: String, pageNumber: Int): ArtResponseModel
     suspend fun getRandomImages(pageNumber: Int): List<RandomImageModel> // TODO change to ArtResponseModel
     suspend fun getAllFavoritesArtFromDb(): List<ArtworkModel>
-     fun getAllImagesModels(): Flow<PagingData<ArtworkModel>>
+     fun getAllImagesModelsRemoteMediator(): Flow<PagingData<ArtworkModel>>
 
 
 

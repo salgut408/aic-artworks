@@ -1,9 +1,6 @@
 package com.salvador.artapp.data.repository_impls
 
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import androidx.paging.*
 import com.salvador.artapp.data.db.ArtworksDatabase
 import com.salvador.artapp.data.remote.api.ArtApi
 import com.salvador.artapp.data.remote.network_responses.detail.NetworkDetail
@@ -18,6 +15,8 @@ import com.salvador.artapp.domain.domain_models.list.ArtworkModel
 import com.salvador.artapp.domain.domain_models.random_image.RandomImageModel
 import com.salvador.artapp.domain.repositories.ArtworkRepository
 import com.salvador.artapp.utils.Constants.Companion.FIELD_TERMS
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 
 class ArtworkRepositoryImpl(
@@ -25,8 +24,8 @@ class ArtworkRepositoryImpl(
     val artworksDatabase: ArtworksDatabase
 ): ArtworkRepository {
 
-    @OptIn(ExperimentalPagingApi::class)
-     override  fun getAllImagesModels(): Flow<PagingData<ArtworkModel>>{
+    @OptIn(ExperimentalPagingApi::class, DelicateCoroutinesApi::class)
+     override  fun getAllImagesModelsRemoteMediator(): Flow<PagingData<ArtworkModel>>{
         val pagingSourceFactory = {artworksDatabase.getArtworkDao().pagingSourceGetAllArtWorkModels()}
         return Pager(
             config = PagingConfig(pageSize = 20),
@@ -36,6 +35,7 @@ class ArtworkRepositoryImpl(
             ),
             pagingSourceFactory = pagingSourceFactory
         ).flow
+
     }
 
     override suspend fun searchForArtworks(

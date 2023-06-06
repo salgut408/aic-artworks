@@ -2,6 +2,8 @@ package com.salvador.artapp.ui.screens.home_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.rememberScrollState
@@ -27,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.salvador.artapp.domain.domain_models.exhibit.new_exhibit.ExhibitModel
@@ -46,8 +49,6 @@ fun HomeScreen(
     val uiState by homeScreenViewModel.listUiState.collectAsStateWithLifecycle()
     val artworks = uiState.currentList
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    val exhibits = homeScreenViewModel.exhibits.collectAsStateWithLifecycle()
-    val ex = exhibits.value
     val getAllImages = homeScreenViewModel.getAllImages.collectAsLazyPagingItems()
 
 
@@ -119,15 +120,12 @@ fun ArtworkList(
 ) {
     val lazyArtItems = artworks.collectAsLazyPagingItems()
     val scrollState = rememberScrollState()
-
-    Column(modifier = Modifier.fillMaxWidth()) {
-
-    }
-
+    val listState = rememberLazyListState()
 
     LazyColumn(
+        modifier = Modifier.scrollable(scrollState, Orientation.Vertical),
         contentPadding = contentPaddingValues,
-//        state = scrollState
+        state = listState
     ) {
         items(lazyArtItems) { art ->
             ArtworkCard(
@@ -167,9 +165,8 @@ fun ArtworkList(
             }
         }
     }
-
-
 }
+
 
 
 @Composable
