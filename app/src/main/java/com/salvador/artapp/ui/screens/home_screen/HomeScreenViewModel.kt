@@ -18,13 +18,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.abs
 
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
     private val artworkRepository: ArtworkRepository,
     private val getArtworksUseCase: GetArtworksUseCase,
-    private val getRandomArtUseCase: GetRandomArtUseCase
+    private val getRandomArtUseCase: GetRandomArtUseCase,
 ) : ViewModel() {
 
     private val _listUiState = MutableStateFlow(ListUiState(isLoading = true))
@@ -41,16 +42,38 @@ class HomeScreenViewModel @Inject constructor(
 //    }.flow
 
 
-
-
     var artPage = 1
+
 
     init {
         loadAllArtworks()
+
     }
 
 
+    fun plusOne(digits: IntArray): IntArray {
+        var newShit = IntArray(digits.size)
+        var bitch =0
+        for(i in 0..digits.size-1){
+            newShit[i] = digits[i]
+            when {
+                i == digits.size -1 -> {
+                    bitch = i + 1
+                    newShit[i] = bitch
+                }
+            }
 
+        }
+        return newShit
+    }
+
+
+    fun fizzBuss(i: Int) = when {
+        i % 15 == 0 -> "FizzBuzz"
+        i % 3 == 0 -> "Fizz"
+        i % 5 == 0 -> "Buzz"
+        else -> "$i"
+    }
 
     private fun loadAllArtworks() = viewModelScope.launch {
 

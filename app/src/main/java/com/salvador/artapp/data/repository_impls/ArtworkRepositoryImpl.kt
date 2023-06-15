@@ -24,7 +24,7 @@ class ArtworkRepositoryImpl(
     val artworksDatabase: ArtworksDatabase
 ): ArtworkRepository {
 
-    @OptIn(ExperimentalPagingApi::class, DelicateCoroutinesApi::class)
+    @OptIn(ExperimentalPagingApi::class)
      override  fun getAllImagesModelsRemoteMediator(): Flow<PagingData<ArtworkModel>>{
         val pagingSourceFactory = {artworksDatabase.getArtworkDao().pagingSourceGetAllArtWorkModels()}
         return Pager(
