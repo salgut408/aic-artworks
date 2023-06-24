@@ -17,7 +17,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.HashMap
 import kotlin.math.abs
 
 
@@ -44,36 +46,147 @@ class HomeScreenViewModel @Inject constructor(
 
     var artPage = 1
 
+    var arr1 = intArrayOf(1, 3, 2, 4, 5, 6, 0, -1)
+    var arr2 = intArrayOf(1, 2, 3, 4, 5, 99, -5)
+    var arr3 = charArrayOf('a', 'b', 'c', 'd')
+
+    var multiArr1 = arrayOf(
+        arrayOf('a','b','c'),
+        arrayOf('d','e','f'),
+        arrayOf('g','h','i')
+    )
+
+    var newNumber = 999
+
+
 
     init {
         loadAllArtworks()
+        reverseWithPointers(arr3)
 
     }
 
 
-    fun plusOne(digits: IntArray): IntArray {
-        var newShit = IntArray(digits.size)
-        var bitch =0
-        for(i in 0..digits.size-1){
-            newShit[i] = digits[i]
-            when {
-                i == digits.size -1 -> {
-                    bitch = i + 1
-                    newShit[i] = bitch
+
+
+
+    fun reverseWithPointers(arr: CharArray): CharArray {
+        var left = 0
+        var right = arr.size - 1
+
+        while (left < right ){
+            val temp = arr[left]
+            arr[left] = arr[right]
+            arr[right] = temp
+            left++
+            right--
+        }
+        println(arr.contentToString())
+        return arr
+    }
+
+    fun reverseArray(arr: CharArray): CharArray {
+      val reversedArray = CharArray(arr.size)
+        for(i in arr.indices){
+            reversedArray[i] = arr[arr.size - 1 - i]
+        }
+        println(reversedArray.contentToString())
+        return reversedArray
+    }
+
+    fun getCoordsForChar(multiArr1: Array<Array<Char>>, key: Char): IntArray {
+        var returnArray: IntArray  = intArrayOf()
+        for(row in multiArr1){
+            for (element in row){
+                if(element == key) {
+                    returnArray = intArrayOf(multiArr1.indexOf(row), row.indexOf(element), )
+                    println(returnArray.contentToString())
                 }
             }
-
         }
-        return newShit
+        return returnArray
     }
 
-
-    fun fizzBuss(i: Int) = when {
-        i % 15 == 0 -> "FizzBuzz"
-        i % 3 == 0 -> "Fizz"
-        i % 5 == 0 -> "Buzz"
-        else -> "$i"
+    fun printCoords(arr: Array<Array<Char>>) {
+        for (row in arr) {
+            println(row.contentToString())
+        }
     }
+
+    fun lowestAndHighest(arr: IntArray): IntArray {
+        var lowest = 0
+        var higest = 0
+
+        for(i in arr){
+            if(i > higest){
+                higest = i
+            }
+            if (i < lowest){
+                lowest = i
+            }
+        }
+
+        return intArrayOf(higest, lowest)
+    }
+
+    fun areEqualWithHash2(arr1: IntArray, arr2: IntArray): Boolean {
+        val map:MutableMap<Int, Int> = mutableMapOf()
+        for (i in arr1.indices){
+            map.put(arr1[i], i, )
+        }
+        for (i in arr2.indices) {
+            if (map.containsKey(arr2[i])){
+                map.remove(arr2[i])
+            }
+        }
+        return map.isEmpty()
+    }
+
+        fun areEqualWithHash(arr1: IntArray, arr2: IntArray): Boolean {
+        var count = 0
+        val map: MutableMap<Int, Int>  = mutableMapOf()
+
+        if (arr1.size != arr2.size) return false
+
+        for (i in arr1.indices){
+            if (!map.containsKey(arr1[i])){
+                map.put(arr1[i], 1)
+            } else {
+                count = map.get(arr1[i])!!
+                count++
+                map.put(arr1[i], count)
+            }
+        }
+        for(i in arr2.indices) {
+            if(!map.containsKey(arr2[i])){
+                return false
+            }
+            if (map.get(arr2[i]) == 0){
+                return false
+            }
+            count = map.get(arr2[i])!!
+            --count
+            map.put(arr2[i], count)
+        }
+        return true
+    }
+
+   fun areTheyTheSame(arr1: IntArray, arr2: IntArray): Boolean {
+       if(arr1.size != arr2.size) return false
+
+       Arrays.sort(arr1)
+       Arrays.sort(arr2)
+
+       for (i in arr1.indices) {
+           if(arr1[i] != arr2[i]) return false
+       }
+       return true
+   }
+
+
+
+
+
 
     private fun loadAllArtworks() = viewModelScope.launch {
 
