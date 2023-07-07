@@ -59,15 +59,38 @@ class HomeScreenViewModel @Inject constructor(
     var newNumber = 999
 
     val stocks = intArrayOf(7, 1, 5, 3, 6, 4, 4, 7, 7, 7)
-    val stocks2 = intArrayOf(1,2,3)
+    val stocks2 = intArrayOf(1,1,1,2,2,3)
     val arrWithDups = intArrayOf(0,1,2,2,3,0,4,2)
     val twosomarr = intArrayOf(3,2,4)
     init {
         loadAllArtworks()
-        plusOne(stocks2)
+        topKFrequent(stocks2, 2)
     }
 
 
+    fun topKFrequent(nums: IntArray, k: Int): IntArray {
+        val map = mutableMapOf<Int, Int>()
+        val returnArray = IntArray(k)
+
+        for( i in nums.indices) {
+            val bool = map.containsKey(nums[i])
+            if(!bool) {
+                map.put(nums[i], 1)
+            } else {
+                map.put(nums[i], map.getValue(nums[i]) + 1)
+            }
+        }
+        map.onEachIndexed { index, entry ->  }
+        for (i in 1 ..k){
+            println("i = $i, entry = ${map.getValue(i)}")
+            returnArray[i-1] = map.getValue(i)
+        }
+
+        println(map.size)
+        println(map.get(k))
+        println("RETURN ARRAY ${returnArray.contentToString()}")
+        return returnArray
+    }
 
     fun removeDupes3(nums: IntArray,): Int {
         var counter = 0
@@ -141,14 +164,6 @@ class HomeScreenViewModel @Inject constructor(
         println(answer.contentToString())
         return answer
     }
-
-
-
-
-
-
-
-
 
     fun findSubArrWithGivnSum_slidingWindow(arr: IntArray, sum: Int): IntArray {
         var left = 0
