@@ -26,7 +26,12 @@ fun ArtApp(
 
 ) {
     val appState = rememberAppState()
-    val navItems = listOf(NavigationScreens.HomeScreen, NavigationScreens.SearchScreen, NavigationScreens.FavoritesScreen, NavigationScreens.ExhibitsScreen)
+    val navItems = listOf(NavigationScreens.HomeScreen,
+        NavigationScreens.SearchScreen,
+        NavigationScreens.FavoritesScreen,
+        NavigationScreens.ExhibitsScreen,
+        NavigationScreens.RandomArtScreen
+    )
 
     val selectedItem = remember { mutableStateOf(navItems[0]) }
 

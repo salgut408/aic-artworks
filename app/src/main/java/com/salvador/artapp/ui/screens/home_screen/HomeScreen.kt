@@ -50,7 +50,8 @@ fun HomeScreen(
     val artworks = uiState.currentList
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
     val getAllImages = homeScreenViewModel.getAllImages.collectAsLazyPagingItems()
-
+    val randomArt by homeScreenViewModel.randomArt.collectAsStateWithLifecycle()
+    // TODO Random art inherit/abstract / make flow paging to make work w homescreen
 
     ArtScaffold(
         topBar = {
@@ -61,6 +62,7 @@ fun HomeScreen(
         },
         content = { padding ->
             Column(modifier = Modifier.fillMaxWidth()) {
+
 
                 if (artworks.isNotEmpty()) {
                     ArtworkList(

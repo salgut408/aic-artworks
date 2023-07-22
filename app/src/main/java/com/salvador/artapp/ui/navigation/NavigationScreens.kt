@@ -11,6 +11,7 @@ sealed class NavigationScreens (val route: String, val icon: ImageVector, val na
     object SearchScreen: NavigationScreens("search_screen", Icons.Default.Search, "Search")
     object FavoritesScreen: NavigationScreens("favorites_screen", Icons.Default.Favorite, "Favs")
     object ExhibitsScreen: NavigationScreens("exhibits_screen", Icons.Default.List, "Exhibits")
+    object RandomArtScreen: NavigationScreens("random_art_screen", Icons.Default.Face, "Random")
 
 
     fun withArgs(vararg args: String): String {

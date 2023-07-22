@@ -25,16 +25,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AICArtworksTheme {
-
-
                 val systemController = rememberSystemUiController()
                 SideEffect {
                     systemController.setSystemBarsColor(Color.LightGray)
                 }
-
-
                 ArtApp()
-
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.salvador.artapp.ui.screens.home_screen
 
 import android.util.Log
-import androidx.compose.runtime.currentRecomposeScope
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.salvador.artapp.domain.domain_models.list.ArtworkModel
@@ -12,15 +11,14 @@ import com.salvador.artapp.domain.repositories.ArtworkRepository
 import com.salvador.artapp.domain.use_cases.GetArtworksUseCase
 import com.salvador.artapp.domain.use_cases.GetRandomArtUseCase
 import com.salvador.artapp.utils.Constants.Companion.FIELD_TERMS
+import com.salvador.artapp.utils.printToLog
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import java.util.*
 import javax.inject.Inject
-import kotlin.collections.HashSet
 
 
 @HiltViewModel
@@ -33,17 +31,15 @@ class HomeScreenViewModel @Inject constructor(
     private val _listUiState = MutableStateFlow(ListUiState(isLoading = true))
     val listUiState: StateFlow<ListUiState> = _listUiState.asStateFlow()
 
-
     private val _randomArt = MutableStateFlow(listOf<RandomImageModel>())
     val randomArt: StateFlow<List<RandomImageModel>> = _randomArt
 
     val getAllImages = artworkRepository.getAllImagesModelsRemoteMediator()
 
-
-
     var artPage = 1
-
-
+//    val art: Flow<PagingData<ArtworkModel>> = Pager(PagingConfig(pageSize = 20)) {
+//        ArtSource(getArtworksUseCase)
+//    }.flow
 
 
 
@@ -54,8 +50,7 @@ class HomeScreenViewModel @Inject constructor(
 
 
 
-
-    private fun loadAllArtworks() = viewModelScope.launch {
+    private fun loadAllArtworks() = viewModelScope.async {
 
         try {
             val response = getArtworksUseCase(FIELD_TERMS, artPage)
@@ -75,6 +70,9 @@ class HomeScreenViewModel @Inject constructor(
 
                 val randomArt = getRandomArtUseCase(1)
                 _randomArt.emit(randomArt)
+                _randomArt.value.toString() .printToLog("RANDOM ART")
+
+            } else {
 
             }
         }

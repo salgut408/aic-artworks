@@ -51,6 +51,11 @@ fun Navigation(
             DetailScreen(id = id, )
         }
         composable(
+            route = NavigationScreens.RandomArtScreen.route
+        ) {
+            // TODO Random art screen
+        }
+        composable(
             route = NavigationScreens.SearchScreen.route
         ) {
             SearchScreen(navController = appState.navController)
